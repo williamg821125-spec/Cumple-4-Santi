@@ -30,11 +30,11 @@
     }
     .carbon-fiber-bg {
       background-color: #090c14;
-      background-image: 
+      background-image:
         radial-gradient(rgba(255, 69, 0, 0.12) 1px, transparent 0),
-        linear-gradient(45deg, #0b0f19 25%, transparent 25%), 
-        linear-gradient(-45deg, #0b0f19 25%, transparent 25%), 
-        linear-gradient(45deg, transparent 75%, #0b0f19 75%), 
+        linear-gradient(45deg, #0b0f19 25%, transparent 25%),
+        linear-gradient(-45deg, #0b0f19 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #0b0f19 75%),
         linear-gradient(-45deg, transparent 75%, #0b0f19 75%);
       background-size: 16px 16px, 12px 12px, 12px 12px, 12px 12px, 12px 12px;
       background-position: 0 0, 0 0, 6px 0, 6px -6px, 0px 6px;
@@ -220,6 +220,14 @@ body{padding-top:env(safe-area-inset-top,0px)}
   .gp-trophy-badge{animation:gpTrophyBounce 1.5s ease-in-out infinite}
   @keyframes gpTrophyBounce{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-5px) rotate(8deg)}}
   .gp-playing .animate-nitro-glow,.gp-playing .animate-spin,.gp-playing .animate-ping{animation:none!important}
+  /* Realce de textos sobre el fondo claro con bandera */
+  .hw-hero-title{filter:drop-shadow(0 0 8px #fff) drop-shadow(0 0 3px #fff) drop-shadow(0 2px 2px rgba(0,0,0,.28))}
+  .hw-chip-light{filter:drop-shadow(0 0 6px #fff) drop-shadow(0 0 2px #fff)}
+  /* Iconos del botón de celebración: copa con balanceo, fuego con parpadeo */
+  .btn-copa{display:inline-block;transform-origin:center bottom;animation:copaBob 2.2s ease-in-out infinite;filter:drop-shadow(0 3px 4px rgba(0,0,0,.45))}
+  @keyframes copaBob{0%,100%{transform:skewX(6deg) translateY(0) rotate(-4deg) scale(1)}50%{transform:skewX(6deg) translateY(-4px) rotate(4deg) scale(1.07)}}
+  .btn-fuego{display:inline-block;transform-origin:center bottom;animation:fuegoFlick .62s ease-in-out infinite;filter:drop-shadow(0 0 10px rgba(255,120,20,.95))}
+  @keyframes fuegoFlick{0%{transform:skewX(6deg) scaleY(1) scaleX(1) rotate(-3deg)}25%{transform:skewX(6deg) scaleY(1.2) scaleX(.93) rotate(2deg)}50%{transform:skewX(6deg) scaleY(.95) scaleX(1.07) rotate(-2deg)}75%{transform:skewX(6deg) scaleY(1.13) scaleX(.97) rotate(3deg)}100%{transform:skewX(6deg) scaleY(1) scaleX(1) rotate(-3deg)}}
   </style>
 </head>
 <body class="carbon-fiber-bg text-white relative min-h-screen selection:bg-orange-500 selection:text-white pb-14">
@@ -292,7 +300,7 @@ body{padding-top:env(safe-area-inset-top,0px)}
 <div class="h-2 w-full bg-gradient-to-r from-yellow-400 via-orange-500 to-red-600 shadow-[0_0_12px_rgba(255,69,0,0.8)] rounded-b-sm"></div>
 <div class="h-2.5 w-full checkered-pattern bg-white/20 opacity-50 mb-2"></div>
 <!-- FLOATING HUD BAR: PISTA STATUS + MEDIA/SOUND TOGGLE -->
-<div class="sticky top-2 z-50 flex items-center justify-between py-1 px-1 pointer-events-none mb-3">
+<div class="relative z-10 flex items-center justify-between py-1 px-1 pointer-events-none mb-3">
 <button class="pointer-events-auto inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-neutral-950 border border-orange-500/60 text-[11px] font-racing font-bold text-yellow-300 shadow-xl active:scale-95 transition-transform cursor-pointer" onclick="activateEnginesAndMusic()">
 <span class="w-2.5 h-2.5 rounded-full bg-green-500 animate-ping"></span>
 <i class="fa-solid fa-flag-checkered text-orange-400 text-xs"></i>
@@ -316,10 +324,10 @@ body{padding-top:env(safe-area-inset-top,0px)}
 </div>
 <!-- BADGE GRAN PRIX CON SEPARACIÓN -->
 <div class="flex justify-center my-3">
-<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-xl bg-gradient-to-r from-red-600 via-orange-500 to-yellow-400 text-black font-racing font-black text-xs uppercase tracking-wider shadow-lg transform -skew-x-6 cursor-pointer hover:scale-105 active:scale-95 transition-all" onclick="playEngineRev()">
-<i class="fa-solid fa-trophy text-black"></i>
-<span>¡GRAN PRIX DE CUMPLEAÑOS!</span>
-<i class="fa-solid fa-fire text-black animate-pulse"></i>
+<div class="inline-flex items-center font-racing uppercase cursor-pointer hover:scale-105 active:scale-95 transition-all" style="gap:11px;padding:17px 30px;border-radius:18px;background:linear-gradient(90deg,#0a2a8c 0%,#1766d8 48%,#28bdf2 100%);color:#fff;font-weight:900;font-size:17px;letter-spacing:.05em;line-height:1.15;box-shadow:0 12px 26px rgba(23,102,216,.55),inset 0 1px 0 rgba(255,255,255,.25);border:2px solid rgba(125,211,252,.65);transform:skewX(-6deg)" onclick="playEngineRev()">
+<svg class="btn-copa" viewBox="0 0 64 64" width="48" height="48" aria-hidden="true"><defs><linearGradient id="gpGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff4bd"/><stop offset=".4" stop-color="#ffd23f"/><stop offset="1" stop-color="#d98613"/></linearGradient></defs><path d="M19 15 C7 15 7 31 20 31" fill="none" stroke="url(#gpGold)" stroke-width="3.4" stroke-linecap="round"/><path d="M45 15 C57 15 57 31 44 31" fill="none" stroke="url(#gpGold)" stroke-width="3.4" stroke-linecap="round"/><path d="M17 9 H47 V20 C47 32 41 40 32 40 C23 40 17 32 17 20 Z" fill="url(#gpGold)"/><rect x="15" y="7" width="34" height="5" rx="2.5" fill="url(#gpGold)"/><rect x="28.5" y="40" width="7" height="9" fill="url(#gpGold)"/><path d="M21 50 H43 L46 57 H18 Z" fill="url(#gpGold)"/><rect x="16" y="55" width="32" height="5" rx="2.5" fill="url(#gpGold)"/><path d="M23 11 C21 20 23 28 28 33" stroke="#fff" stroke-width="2" fill="none" opacity=".55" stroke-linecap="round"/><path d="M32 15 l1.6 4.3 4.6 .2 -3.6 2.8 1.3 4.4 -3.9 -2.6 -3.9 2.6 1.3 -4.4 -3.6 -2.8 4.6 -.2 Z" fill="#fff6d6" opacity=".9"/></svg>
+<span>¡GRAN CELEBRACIÓN DE CUMPLEAÑOS!</span>
+<svg class="btn-fuego" viewBox="0 0 40 52" width="36" height="46" aria-hidden="true"><defs><linearGradient id="gpFlame" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ff2d00"/><stop offset=".45" stop-color="#ff8c00"/><stop offset="1" stop-color="#ffe23d"/></linearGradient><linearGradient id="gpFlameCore" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ff8c00"/><stop offset=".6" stop-color="#ffd23f"/><stop offset="1" stop-color="#fff6d0"/></linearGradient></defs><path d="M20 1 C24 12 33 17 31 31 A13 13 0 1 1 9 31 C8 24 12 21 14 16 C15 20 18 21 20 20 C18 13 19 7 20 1 Z" fill="url(#gpFlame)"/><path d="M20 18 C22 24 26 26 25 33 A7 7 0 1 1 15 34 C15 29 18 28 18 24 C19 27 20 27 21 26 C20 23 20 20 20 18 Z" fill="url(#gpFlameCore)"/></svg>
 </div>
 </div>
 <!-- 2. ACTION BANNER / TARJETA DEL AUTO DE CARRERAS (ESPACIADO MY-5) -->
