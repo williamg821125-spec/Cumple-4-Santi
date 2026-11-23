@@ -1549,7 +1549,7 @@ body{padding-top:env(safe-area-inset-top,0px)}
     }
 
     // --- CARRERA POR EL PREMIO (canvas) ---
-const GP={tel:'573182840198',cierre:'2026-12-05T18:00:00',cierreTxt:'el sábado 5 de diciembre',form:'',endpoint:''}; // endpoint: URL del Apps Script (Google Sheet). form: enlace opcional.
+const GP={tel:'573182840198',cierre:'2026-12-05T18:00:00',cierreTxt:'el sábado 5 de diciembre',form:'',endpoint:'https://script.google.com/macros/s/AKfycby41AsBNSIMPfAqboi_w1nM57RIbjFfe14DyJhp_Bb2H6Ox0P7ihTBHo_aVe_huge1i/exec'}; // endpoint: URL del Apps Script (Google Sheet). form: enlace opcional.
 function gpPost(tipo,datos){ if(!GP.endpoint)return; try{ const body=new URLSearchParams(Object.assign({tipo:tipo,fecha:new Date().toISOString()},datos)); fetch(GP.endpoint,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body.toString()}).catch(()=>{}); }catch(e){} }
 const gpLd=k=>{try{return localStorage.getItem(k)}catch(e){return null}},gpSv=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 let gpBibV=gpLd('gp_bib'),gpBest=+gpLd('gp_best')||0,gpBestDate=gpLd('gp_best_date')||'';
