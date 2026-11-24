@@ -641,7 +641,7 @@ body{padding-top:env(safe-area-inset-top,0px)}
 </div>
 <h3 class="font-racing text-2xl font-black text-yellow-400 uppercase">¡REGISTRO CONFIRMADO!</h3>
 <p class="text-xs text-gray-300 px-2 leading-relaxed" id="successText">
-            Tu registro quedó guardado. Personaliza tu pase de piloto:
+            Tu registro quedó guardado. Descarga tu pase de piloto:
           </p>
 <div class="pt-2 space-y-2.5">
 <a class="w-full py-3.5 px-4 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-racing font-black text-sm uppercase rounded-xl shadow-lg border border-blue-300 flex items-center justify-center gap-2.5 active:scale-95 transition-transform" href="javascript:void(0)" onclick="abrirSeccion('vipPassSection'); playBeep(720, 0.1);">
@@ -696,27 +696,12 @@ body{padding-top:env(safe-area-inset-top,0px)}
           PASE DE PILOTO VIP #4
         </h3>
 <p class="text-xs text-gray-300 mt-0.5 leading-snug">
-          Personaliza tu licencia oficial de pits y descárgala directo a tu celular.
+          Tu credencial oficial se genera con los datos de tu registro. Descárgala directo a tu celular.
         </p>
 </div>
-<!-- Inputs rápidos para personalizar el Pase VIP -->
-<div class="grid grid-cols-3 gap-2 mb-3 text-left">
-<div class="col-span-2">
-<label class="block text-[10px] font-bold text-gray-400 uppercase mb-1">Nombre en el Pase</label>
-<input class="w-full bg-black/75 border border-orange-500/50 rounded-xl px-3 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-yellow-400" id="vipPassName" oninput="drawVipPass()" placeholder="Ej: Familia Ramírez Gómez" type="text"/>
-</div>
-<div>
-<label class="block text-[10px] font-bold text-gray-400 uppercase mb-1">Cupos</label>
-<select class="w-full bg-black/75 border border-orange-500/50 rounded-xl px-2 py-2 text-xs text-white focus:outline-none focus:border-yellow-400" id="vipPassCount" onchange="drawVipPass()">
-<option value="1">1 Piloto</option>
-<option selected="" value="2">2 Pilotos</option>
-<option value="3">3 Pilotos</option>
-<option value="4">4 Pilotos</option>
-<option value="5">5+ Escud.</option>
-</select>
-<p style="font-size:10px;color:#fde047;margin-top:4px;line-height:1.2">👨‍👩‍👧 Adultos y niños</p>
-</div>
-</div>
+<!-- El pase se genera SOLO con la familia registrada (no editable) -->
+<input type="hidden" id="vipPassName" value=""/>
+<div id="passStatus" class="mb-3 text-left rounded-xl px-3 py-2.5 text-xs" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12)"></div>
 <!-- Canvas de la Credencial VIP -->
 <div class="rounded-2xl overflow-hidden border-2 border-yellow-400/70 shadow-[0_0_25px_rgba(255,69,0,0.45)] bg-black mb-3">
 <canvas class="w-full h-auto block" height="470" id="vipPassCanvas" width="700"></canvas>
@@ -1458,10 +1443,9 @@ Ranking en vivo · <span class="text-green-400">TOP 5</span></h3>
       ctx.setTransform(S,0,0,S,0,0);
       ctx.clearRect(0,0,W,H);
 
-      const nameInput = document.getElementById('vipPassName');
-      const countInput = document.getElementById('vipPassCount');
-      const pilotName = (nameInput && nameInput.value.trim()) ? nameInput.value.trim() : 'Piloto invitado';
-      const pilotCount = countInput ? countInput.value : '2';
+      const regFam = (typeof gpLd==='function' && (gpLd('gp_fam')||'').trim()) || '';
+      const pilotName = regFam ? famDisp(regFam) : 'Piloto invitado';
+      try{ passStatusUI(regFam); }catch(e){}
       const bib = (typeof gpBibV!=='undefined' && gpBibV) ? gpBibV : '----';
 
       // ====== PASE VIP · ESTILO F1 PADDOCK ======
@@ -1516,7 +1500,7 @@ Ranking en vivo · <span class="text-green-400">TOP 5</span></h3>
       ctx.textAlign='left';
       // Logo de escudería de la familia
       let LX=R, LW=RW;
-      const hasFam = !!(nameInput && nameInput.value.trim());
+      const hasFam = !!regFam;
       const lg = hasFam ? famLogoImg(famIdx(pilotName)) : null;
       if(lg && lg.complete && lg.naturalWidth){ ctx.save(); ctx.shadowColor='rgba(0,0,0,0.6)'; ctx.shadowBlur=10; ctx.shadowOffsetY=3; ctx.drawImage(lg, R-2, 118, 60, 60); ctx.restore(); LX=R+68; LW=RW-68; }
       ctx.fillStyle='#9aa0ad'; ctx.font='700 11px '+O; ctx.fillText(LX>R?'ESCUDERÍA · FAMILIA AUTORIZADA':'FAMILIA AUTORIZADA', LX, 136);
@@ -1527,7 +1511,7 @@ Ranking en vivo · <span class="text-green-400">TOP 5</span></h3>
 
       // Stats: cupos | hora
       const sY=194, sW=(RW-12)/2, sH=52;
-      [[ 'CUPOS', pilotCount+' '+(parseInt(pilotCount)===1?'PILOTO':'PILOTOS') ], ['LARGADA','4:00 PM']].forEach((it,i)=>{
+      [[ 'FECHA', 'DOM 6 DIC' ], ['LARGADA','4:00 PM']].forEach((it,i)=>{
         const x=R+i*(sW+12);
         ctx.fillStyle='rgba(255,255,255,0.06)'; roundRectPath(ctx,x,sY,sW,sH,10); ctx.fill();
         ctx.strokeStyle='rgba(255,255,255,0.12)'; ctx.lineWidth=1; roundRectPath(ctx,x,sY,sW,sH,10); ctx.stroke();
@@ -1565,7 +1549,16 @@ Ranking en vivo · <span class="text-green-400">TOP 5</span></h3>
       ctx.strokeStyle=fo; roundRectPath(ctx,1.5,1.5,W-3,H-3,25); ctx.stroke();
     }
 
+    function passStatusUI(fam){
+      var el=document.getElementById('passStatus'); if(!el) return;
+      try{ var db=document.querySelector('#vipPassSection button[onclick*="downloadVipPass"]'); if(db){ db.style.opacity=fam?'':'0.45'; db.style.filter=fam?'':'grayscale(.6)'; } }catch(e){}
+      if(fam){ el.innerHTML='<span style="color:#86efac">✅ Pase de:</span> <b class="text-white">'+String(famDisp(fam)).replace(/</g,'')+'</b><br><span class="text-gray-400" style="font-size:10px">Se genera con tu registro. ¿No es tu familia? Usa «Ingresar con código» en los juegos.</span>'; }
+      else { el.innerHTML='<span style="color:#fde047">🔒 Primero confirma tu asistencia</span><br><span class="text-gray-400" style="font-size:10px">Tu pase se crea automáticamente con el nombre de tu familia cuando te registras.</span> <a href="javascript:void(0)" onclick="irARegistro()" class="underline font-bold" style="color:#93c5fd">Ir al registro</a>'; }
+    }
+    function irARegistro(){ var s=document.getElementById('rsvpSection'); if(s) s.scrollIntoView({behavior:'smooth',block:'start'}); }
+
     function downloadVipPass() {
+      if(!((typeof gpLd==='function' && gpLd('gp_fam'))||'').trim()){ try{passStatusUI('');}catch(e){} irARegistro(); return; }
       initAudio();
       playVictoryChime();
       const canvas = document.getElementById('vipPassCanvas');
@@ -1790,6 +1783,7 @@ Ranking en vivo · <span class="text-green-400">TOP 5</span></h3>
       try{ gpPost('inscripcion',{familia:name,whatsapp:phone,cupos:count,asistencia:attendance,mensaje:msg,largada:(typeof gpBibV!=='undefined'?(gpBibV||''):'')}); }catch(e){}
       // Blindaje: deja guardada la familia en este dispositivo
       try{ gpSv('gp_fam', name); if(gpBibV)gpSv('gp_bib', gpBibV); }catch(e){}
+      try{ drawVipPass(); }catch(e){}
 
       const successText = document.getElementById('successText');
       successText.innerHTML = `
@@ -2088,7 +2082,7 @@ function gpRefresh(){
   }
   window.abrirSeccion=function(id){ var s=document.getElementById(id); if(s&&s.__open)s.__open(); if(s) setTimeout(function(){ s.scrollIntoView({behavior:'smooth',block:'start'}); },70); };
   function go(){
-    collapsify('vipPassSection','PASE DE PILOTO VIP · ¡PERSONALÍZALO!','blue');
+    collapsify('vipPassSection','PASE DE PILOTO VIP · ¡DESCÁRGALO!','blue');
     collapsify('gameSection','CARRERA · ¡JUEGA Y GANA EL PREMIO!','orange',true);
     collapsify('f1Section','SEMÁFORO · ¿QUÉ TAN RÁPIDO ERES?','blue');
   }
@@ -2176,7 +2170,7 @@ document.addEventListener('dragstart',function(e){if(e.target&&e.target.tagName=
 </div>
 <div class="help-body">
 <details open><summary><span>1</span>Confirmar asistencia</summary><p>En <b>Registro de pilotos</b> escribe la familia con <b>los dos apellidos</b> (ej: <i>Familia García Zúñiga</i>), cuántos van y si asistirás. El WhatsApp es <b>opcional</b>: si lo dejas, te aparece un botón para recibir tu confirmación. Al enviar recibes tu <b>número de largada</b>.</p></details>
-<details><summary><span>2</span>Descargar el Pase VIP</summary><p>Toca <b>Descarga tu Pase VIP</b> (botón azul), revisa el nombre y los cupos y toca <b>Descargar mi Pase VIP</b>. Se guarda como imagen en tu celular. Al descargarlo se <b>desbloquea el juego</b>.</p></details>
+<details><summary><span>2</span>Descargar el Pase VIP</summary><p>Toca <b>Descarga tu Pase VIP</b> (botón azul): se crea solo con el nombre de tu familia. Toca <b>Descargar mi Pase VIP</b>. Se guarda como imagen en tu celular. Al descargarlo se <b>desbloquea el juego</b>.</p></details>
 <details><summary><span>3</span>Cómo se juega</summary><p>Cambia de carril con las flechas ← → (o tocando los lados de la pista). Esquiva conos, llantas y carros. Las <b>monedas cargan el NITRO</b>: cuando la barra diga <b>LISTO</b>, toca <b>NITRO</b> (en computador, la <b>barra espaciadora</b>). La velocidad sube poco a poco.</p></details>
 <details><summary><span>4</span>Cómo ganar el premio</summary><p>Juega con tu familia registrada: <b>cada partida envía tu puntaje</b> y en el ranking queda el mejor de cada familia. Se aceptan puntajes hasta el <b>sábado 5 de diciembre</b>. La familia con el mayor puntaje gana un <b>premio sorpresa</b> que se entrega en la fiesta.</p></details>
 <details><summary><span>5</span>Jugar desde otro celular</summary><p>Toca <b>¿Juegas desde otro teléfono?</b> debajo del registro y escribe tu <b>código familiar</b> (el #número de tu pase) <b>o el celular</b> con el que te registraste, más el nombre de tu familia igual al registro. Así todos suman para la misma familia. El código <b>solo lo conoce tu familia</b>.</p></details>
