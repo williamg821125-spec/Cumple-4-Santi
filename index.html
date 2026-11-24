@@ -1856,7 +1856,7 @@ function gpRefresh(){
         btnText.innerText = "VOLVER A PROBAR";
         const fs=document.getElementById('f1Send');
         const regF1=(typeof estaRegistrado==='function'&&estaRegistrado());
-        if(fs){ fs.classList.remove('hidden'); if(regF1){ const nm=((document.getElementById('guestName')||{}).value||'').trim(); fs.textContent='✓ Tiempo guardado: '+reactionScore+' s'; gpPost('puntaje',{juego:'semaforo',familia:nm,largada:gpBibV||'',tiempo:reactionScore}); } else { fs.textContent='Regístrate arriba para guardar tu tiempo'; } }
+        if(fs){ fs.classList.remove('hidden'); if(regF1){ const nm=((document.getElementById('guestName')||{}).value||'').trim(); fs.textContent='✓ Tiempo guardado: '+reactionScore+' s'; gpPost('puntaje',{juego:'semaforo',familia:nm,largada:gpBibV||'',tiempo:Math.round(parseFloat(String(reactionScore).replace(',','.'))*1000)+' ms'}); } else { fs.textContent='Regístrate arriba para guardar tu tiempo'; } }
       }
     }
   </script>
