@@ -1687,7 +1687,8 @@ function gpOver(){
  const fecha=gpBestDate||new Date().toLocaleDateString('es-CO',{day:'numeric',month:'long'});
  if($g('gpTitle')){$g('gpTitle').textContent='¡FELICIDADES!';$g('gpTitle').className='font-racing text-2xl font-black text-yellow-300 uppercase italic mb-1'}
  if(_fam){
-  $g('gpMsg').innerHTML='<span class="font-racing font-black text-yellow-300 text-base">¡Felicidades Familia '+_fam+'!</span><br>'+'<span class="text-white text-sm">Obtuviste tu mejor puntaje <b class="text-orange-400">'+gpBest+' puntos</b></span><br>'+'<span class="text-gray-400 text-[11px]">Lo lograste el '+fecha+'</span><br>'+'<span class="text-green-400 font-racing text-xs mt-2 inline-block">¡Gracias por participar!</span>'+(esRecord?'<br><span class="text-yellow-400 text-[11px] font-racing"><i class="fa-solid fa-trophy"></i> ¡Nuevo récord personal!</span>':'');
+  var _famDisp=/^familia\b/i.test(_fam.trim())?_fam.trim():'Familia '+_fam.trim();
+  $g('gpMsg').innerHTML='<span class="font-racing font-black text-yellow-300 text-base">¡Felicidades '+_famDisp+'!</span><br>'+'<span class="text-white text-sm">Obtuviste tu mejor puntaje <b class="text-orange-400">'+gpBest+' puntos</b></span><br>'+'<span class="text-gray-400 text-[11px]">Lo lograste el '+fecha+'</span><br>'+'<span class="text-green-400 font-racing text-xs mt-2 inline-block">¡Gracias por participar!</span>'+(esRecord?'<br><span class="text-yellow-400 text-[11px] font-racing"><i class="fa-solid fa-trophy"></i> ¡Nuevo récord personal!</span>':'');
  }else{
   if($g('gpTitle')){$g('gpTitle').textContent='¡BUEN INTENTO!';}
   $g('gpMsg').innerHTML='<span class="text-white text-sm">Lograste <b class="text-orange-400">'+sc+' puntos</b></span><br>'+'<span class="text-yellow-300 font-racing text-xs mt-2 inline-block">Regístrate arriba para concursar por el premio y aparecer en el podio.</span>';
@@ -1709,7 +1710,8 @@ function reingresar(){
   var gn=document.getElementById('guestName'); if(gn)gn.value=fam;
   try{gpRefresh();}catch(e){} try{drawVipPass();}catch(e){}
   try{initAudio();playVictoryChime();}catch(e){}
-  if(st){st.innerHTML='\u2713 \u00a1Listo, familia <b>'+fam.replace(/</g,'')+'</b>! Juega con el n\u00famero #'+bib+'; tus puntajes cuentan para tu familia.';st.className='text-[11px] text-green-400';}
+  var famD=(/^familia\b/i.test(fam.trim())?fam.trim():'Familia '+fam.trim()).replace(/</g,'');
+  if(st){st.innerHTML='\u2713 \u00a1Listo, <b>'+famD+'</b>! Juega con el n\u00famero #'+bib+'; tus puntajes cuentan para tu familia.';st.className='text-[11px] text-green-400';}
   if(typeof abrirSeccion==='function') setTimeout(function(){abrirSeccion('gameSection');},500);
 }
 function renderRanking(data){var top=(data&&data.top)||[];var med=['#ffd100','#c9d2e3','#e6873c'];var html;if(!top.length){html='<li class="text-[11px] text-gray-500">Aún no hay puntajes de familias. ¡Sé la primera!</li>';}else{html=top.map(function(f,i){return '<li class="flex items-center gap-2 bg-black/50 rounded-lg px-2.5 py-1.5"><span class="font-racing font-black text-sm w-5 text-center" style="color:'+(med[i]||'#8aa')+'">'+(i+1)+'</span><span class="flex-1 text-xs text-white truncate">'+String(f.familia).replace(/</g,'')+'</span><span class="font-racing font-black text-sm text-orange-400">'+f.puntaje+'</span></li>';}).join('');}['gpLiveBoard','gpLiveBoard2'].forEach(function(idv){var el=document.getElementById(idv);if(el)el.innerHTML=html;});}
