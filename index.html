@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 
 <html class="scroll-smooth" lang="es"><head>
+<script>
+/* Navegabilidad: siempre abrir la invitación desde el principio */
+try{ if('scrollRestoration' in history) history.scrollRestoration='manual'; }catch(e){}
+try{ if(location.hash) history.replaceState(null,'',location.pathname+location.search); }catch(e){}
+</script>
+
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
 <meta content="#ff4500" name="theme-color"/>
@@ -2084,6 +2090,17 @@ async function handleRSVP(e){
   window.__bibOverride=(r&&r.largadaUsada)?gpNro(name.toLowerCase()+'|'+d+'|'+Date.now()):'';
   try{handleRSVPCore({preventDefault:function(){}});}finally{window.__bibOverride='';}
 }
+
+/* Siempre al inicio al abrir (salvo que la persona ya haya empezado a deslizar) */
+(function(){
+  var tocado=false;
+  ['touchstart','wheel','keydown','mousedown'].forEach(function(ev){ window.addEventListener(ev,function(){tocado=true;},{passive:true,once:true}); });
+  function arriba(){ if(tocado) return; var h=document.documentElement, prev=h.style.scrollBehavior; h.style.scrollBehavior='auto'; window.scrollTo(0,0); h.style.scrollBehavior=prev; }
+  arriba();
+  document.addEventListener('DOMContentLoaded', arriba);
+  window.addEventListener('load', function(){ arriba(); setTimeout(arriba,250); });
+  window.addEventListener('pageshow', function(e){ if(e.persisted){ tocado=false; arriba(); } });
+})();
 </script>
 
 <!-- ===== BOTÓN FLOTANTE DE AYUDA ===== -->
