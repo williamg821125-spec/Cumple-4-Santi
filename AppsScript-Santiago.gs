@@ -3,10 +3,9 @@
  *
  *  CÓMO ACTUALIZAR:
  *  1. Pega TODO esto en tu Apps Script (reemplaza lo anterior) y guarda (💾).
- *  2. IMPORTANTE: en la barra de arriba elige la función  probarAviso  y presiona
- *     ▶ Ejecutar. Google te pedirá permisos: "Revisar permisos" → tu cuenta →
- *     "Configuración avanzada" → "Ir a ... (no seguro)" → Permitir.
- *     (Llega un correo de prueba a los dos correos.)
+ *  2. En la barra de arriba elige la función  probarAviso  y presiona ▶ Ejecutar.
+ *     Llega un correo de prueba a los dos correos (si Google pide permisos:
+ *     "Revisar permisos" → tu cuenta → "Configuración avanzada" → "Ir a…" → Permitir).
  *  3. Implementar → Gestionar implementaciones → lápiz (editar) →
  *     Versión: "Nueva versión" → Implementar.   (La URL /exec NO cambia.)
  *  4. Para borrar los datos de prueba: elige la función  limpiarTodo  y ▶ Ejecutar.
@@ -14,10 +13,6 @@
 
 var CORREOS = ['wil1509@live.com', 'Paozuso2282@gmail.com'];
 
-/* WhatsApp en tiempo real (gratis con CallMeBot, a TU propio número).
-   Cuando CallMeBot te responda "Your APIKEY is 123456", pega ese número aquí. */
-var WA_TEL    = '+573182840198';
-var WA_APIKEY = '';            // ej: '123456'  (vacío = WhatsApp apagado, solo correo)
 var TZ = 'America/Bogota';
 
 function instalar() {
@@ -152,16 +147,6 @@ function avisoInscripcion_(r) {
   c = c.concat(lista);
   try {
     MailApp.sendEmail({ to: CORREOS.join(','), subject: '🏁 Nueva inscripción: ' + r[1] + ' — van ' + ins.length + ' familias', body: c.join('\n') });
-  } catch (e) {}
-  whatsapp_(c.join('\n'));
-}
-function whatsapp_(texto) {
-  if (!WA_APIKEY) return;
-  try {
-    if (texto.length > 1500) texto = texto.slice(0, 1480) + '\n…(ver correo)';
-    var url = 'https://api.callmebot.com/whatsapp.php?phone=' + encodeURIComponent(WA_TEL) +
-              '&apikey=' + encodeURIComponent(WA_APIKEY) + '&text=' + encodeURIComponent(texto);
-    UrlFetchApp.fetch(url, { muteHttpExceptions: true });
   } catch (e) {}
 }
 function totalAsistentes_(ins) {

@@ -233,6 +233,41 @@ body{padding-top:env(safe-area-inset-top,0px)}
   @keyframes btnJump{0%,100%{transform:translateY(0) scale(1)}18%{transform:translateY(-9px) scale(1.035)}36%{transform:translateY(0) scale(1)}46%{transform:translateY(-4px) scale(1.015)}60%{transform:translateY(0) scale(1)}}
   .btn-jump .copa-mini{animation:copaBob 2.2s ease-in-out infinite;transform-origin:center bottom}
   @media (prefers-reduced-motion:reduce){.btn-jump{animation:none}}
+  /* Versículo dorado iluminado */
+  .verse-toggle{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:999px;font-family:"Chakra Petch",sans-serif;font-weight:700;font-size:14px;letter-spacing:.04em;color:#ffe08a;background:linear-gradient(180deg,rgba(255,209,0,.12),rgba(255,209,0,.03));border:1px solid rgba(255,209,0,.45);text-shadow:0 0 10px rgba(255,200,60,.75),0 0 2px rgba(255,230,140,.9);box-shadow:0 0 18px rgba(255,190,40,.25),inset 0 0 10px rgba(255,209,0,.08);cursor:pointer;animation:verseGlow 2.8s ease-in-out infinite}
+  .verse-star{color:#ffd100}
+  .verse-chev{display:inline-block;font-size:15px;transition:transform .3s ease}
+  .verse-toggle[aria-expanded="true"] .verse-chev{transform:rotate(180deg)}
+  .verse-body{max-height:0;overflow:hidden;opacity:0;transition:max-height .45s ease,opacity .45s ease}
+  .verse-body.open{max-height:160px;opacity:1}
+  .verse-text{margin:10px auto 2px;max-width:360px;padding:0 10px;font-family:"Outfit",sans-serif;font-style:italic;font-weight:600;font-size:15px;line-height:1.45;color:#ffe9b0;text-shadow:0 0 12px rgba(255,190,50,.6),0 1px 1px rgba(0,0,0,.6)}
+  @keyframes verseGlow{0%,100%{box-shadow:0 0 14px rgba(255,190,40,.22),inset 0 0 10px rgba(255,209,0,.08)}50%{box-shadow:0 0 26px rgba(255,200,60,.45),inset 0 0 12px rgba(255,209,0,.14)}}
+  /* Botón flotante de ayuda */
+  #helpFab{position:fixed;right:14px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:90;display:flex;flex-direction:column;align-items:center;justify-content:center;width:58px;height:58px;border-radius:50%;border:2px solid #ffd100;background:radial-gradient(circle at 35% 30%,#ff9a3c,#ff4500 60%,#b81d00);color:#fff;box-shadow:0 8px 20px rgba(0,0,0,.55),0 0 18px rgba(255,90,0,.55);cursor:pointer;transition:transform .15s ease,opacity .25s ease;animation:helpPulse 2.6s ease-in-out infinite}
+  #helpFab:active{transform:scale(.92)}
+  .help-q{font-family:"Chakra Petch",sans-serif;font-weight:700;font-size:24px;line-height:1;margin-top:2px}
+  .help-lbl{font-family:"Chakra Petch",sans-serif;font-weight:700;font-size:8.5px;letter-spacing:.08em;margin-top:1px}
+  @keyframes helpPulse{0%,100%{box-shadow:0 8px 20px rgba(0,0,0,.55),0 0 14px rgba(255,90,0,.45)}50%{box-shadow:0 8px 20px rgba(0,0,0,.55),0 0 26px rgba(255,140,0,.85)}}
+  .gp-playing #helpFab{opacity:0;pointer-events:none}
+  .help-overlay{position:fixed;inset:0;z-index:120;background:rgba(0,0,0,.72);display:none;align-items:flex-end;justify-content:center;padding:12px 12px calc(12px + env(safe-area-inset-bottom,0px))}
+  .help-overlay.open{display:flex}
+  .help-card{width:100%;max-width:430px;max-height:84vh;display:flex;flex-direction:column;background:linear-gradient(180deg,#191b22,#0b0c10);border:2px solid #ff6a00;border-radius:22px;box-shadow:0 0 30px rgba(255,90,0,.35);overflow:hidden;animation:helpUp .3s ease}
+  @keyframes helpUp{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
+  .help-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;border-bottom:1px solid rgba(255,255,255,.08);background:repeating-linear-gradient(90deg,rgba(255,255,255,.06) 0 10px,transparent 10px 20px) bottom/100% 4px no-repeat}
+  .help-kicker{font-family:"Chakra Petch",sans-serif;font-weight:700;font-size:11px;letter-spacing:.12em;color:#ff7a1a}
+  .help-head h3{margin:0;font-family:"Chakra Petch",sans-serif;font-weight:700;font-size:21px;color:#ffd100;text-transform:uppercase}
+  .help-x{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);color:#fff;font-size:16px;border:1px solid rgba(255,255,255,.15);cursor:pointer}
+  .help-body{overflow-y:auto;padding:10px 14px 4px;-webkit-overflow-scrolling:touch}
+  .help-body details{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;margin-bottom:8px}
+  .help-body details[open]{border-color:rgba(255,209,0,.4);background:rgba(255,209,0,.05)}
+  .help-body summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:11px 12px;font-family:"Chakra Petch",sans-serif;font-weight:700;font-size:14px;color:#fff;text-transform:uppercase;letter-spacing:.02em}
+  .help-body summary::-webkit-details-marker{display:none}
+  .help-body summary::after{content:"▾";margin-left:auto;color:#ffd100;transition:transform .25s}
+  .help-body details[open] summary::after{transform:rotate(180deg)}
+  .help-body summary span{flex:none;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#ff4500;color:#fff;font-size:12px}
+  .help-body p{margin:0;padding:0 14px 12px 44px;font-size:13px;line-height:1.5;color:#c9ccd4}
+  .help-body p b{color:#ffe08a}
+  .help-ok{margin:8px 14px 14px;padding:13px;border-radius:14px;border:2px solid #ffd100;background:linear-gradient(90deg,#ff6a00,#e8262b);color:#fff;font-family:"Chakra Petch",sans-serif;font-weight:700;font-size:15px;letter-spacing:.04em;cursor:pointer}
   /* Ingreso con código y aviso de familia repetida */
   .code-login{margin:0 0 12px;padding:10px 12px;border-radius:14px;background:rgba(25,183,255,.08);border:1px solid rgba(25,183,255,.45);text-align:left}
   .cl-t{margin:0 0 8px;font-family:"Chakra Petch",sans-serif;font-weight:700;font-size:12.5px;color:#8fd4ff;text-transform:uppercase;letter-spacing:.02em}
@@ -350,6 +385,15 @@ body{padding-top:env(safe-area-inset-top,0px)}
 <svg class="btn-fuego" viewBox="0 0 40 52" width="36" height="46" aria-hidden="true"><defs><linearGradient id="gpFlame" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ff2d00"/><stop offset=".45" stop-color="#ff8c00"/><stop offset="1" stop-color="#ffe23d"/></linearGradient><linearGradient id="gpFlameCore" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ff8c00"/><stop offset=".6" stop-color="#ffd23f"/><stop offset="1" stop-color="#fff6d0"/></linearGradient></defs><path d="M20 1 C24 12 33 17 31 31 A13 13 0 1 1 9 31 C8 24 12 21 14 16 C15 20 18 21 20 20 C18 13 19 7 20 1 Z" fill="url(#gpFlame)"/><path d="M20 18 C22 24 26 26 25 33 A7 7 0 1 1 15 34 C15 29 18 28 18 24 C19 27 20 27 21 26 C20 23 20 20 20 18 Z" fill="url(#gpFlameCore)"/></svg>
 </div>
 </div>
+<!-- VERSÍCULO DESPLEGABLE (DORADO ILUMINADO) -->
+<div class="text-center -mt-1 mb-1">
+<button type="button" id="verseToggle" class="verse-toggle" onclick="toggleVerse()" aria-expanded="false" aria-controls="verseBody">
+<span class="verse-star">✦</span><span>Josué 1:8 (TLA)</span><span id="verseChevron" class="verse-chev">▾</span>
+</button>
+<div id="verseBody" class="verse-body" aria-hidden="true">
+<p class="verse-text">«Estudia siempre el libro de la ley y ponlo en práctica; así te irá bien en todo lo que hagas.»</p>
+</div>
+</div>
 <!-- 2. ACTION BANNER / TARJETA DEL AUTO DE CARRERAS (ESPACIADO MY-5) -->
 <div class="my-5 relative w-full h-44 rounded-2xl overflow-hidden border-2 border-orange-500 shadow-2xl group cursor-pointer race-slide-card hover:border-yellow-400 transition-all" onclick="playEngineRev(); playTireScreech();">
 <img alt="Santiago en su carro" class="w-full h-full object-cover" style="object-position:50% 32%" src="banner.jpg"/>
@@ -456,7 +500,6 @@ body{padding-top:env(safe-area-inset-top,0px)}
 </div>
 </div>
 </header>
-
 
 <!-- FORMULARIO RSVP OPTIMIZADO PARA MÓVIL (WHATSAPP READY) -->
 <section class="my-6" id="rsvpSection">
@@ -572,6 +615,8 @@ body{padding-top:env(safe-area-inset-top,0px)}
 <span class="bg-white/25 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-none">1</span>
 <span>DESCARGA TU PASE VIP #4</span>
 </a>
+<p id="passLockHint" class="text-[11px] text-gray-400 leading-snug px-1 flex items-start gap-1.5"><i class="fa-solid fa-lock text-yellow-400 mt-0.5"></i><span>Primero descarga tu pase (paso 1). Al descargarlo se <b class="text-yellow-300">desbloquea el juego</b> — así todas las familias tienen su pase.</span></p>
+<div id="gameStepWrap" class="hidden">
 <a class="btn-jump w-full py-4 px-4 bg-gradient-to-r from-orange-500 via-orange-500 to-red-600 text-white font-racing font-black text-base uppercase rounded-xl shadow-[0_8px_22px_rgba(255,80,0,0.5)] border-2 border-yellow-300 flex items-center justify-center gap-2.5 active:scale-95" href="javascript:void(0)" onclick="abrirSeccion('gameSection'); playEngineRev();">
 <span class="bg-white/25 rounded-full w-6 h-6 flex items-center justify-center text-sm flex-none">2</span>
 <span>¡JUEGA Y GANA EL PREMIO!</span>
@@ -639,7 +684,7 @@ body{padding-top:env(safe-area-inset-top,0px)}
 </div>
 <!-- Canvas de la Credencial VIP -->
 <div class="rounded-2xl overflow-hidden border-2 border-yellow-400/70 shadow-[0_0_25px_rgba(255,69,0,0.45)] bg-black mb-3">
-<canvas class="w-full h-auto block" height="440" id="vipPassCanvas" width="700"></canvas>
+<canvas class="w-full h-auto block" height="470" id="vipPassCanvas" width="700"></canvas>
 </div>
 <!-- Botón Descargar PNG -->
 <button class="w-full py-3.5 px-4 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-600 text-neutral-950 font-racing font-black text-sm uppercase rounded-2xl hw-btn-pedal border-2 border-yellow-200 flex items-center justify-center gap-2 active:scale-95 transition-transform" onclick="downloadVipPass()">
@@ -647,6 +692,7 @@ body{padding-top:env(safe-area-inset-top,0px)}
 <span>DESCARGAR MI PASE VIP (PNG)</span>
 <i class="fa-solid fa-qrcode text-base"></i>
 </button>
+<a id="passDoneNext" class="hidden btn-jump mt-3 w-full py-3.5 px-4 bg-gradient-to-r from-orange-500 to-red-600 text-white font-racing font-black text-sm uppercase rounded-xl border-2 border-yellow-300 flex items-center justify-center gap-2 active:scale-95" href="javascript:void(0)" onclick="abrirSeccion('gameSection'); playEngineRev();"><i class="fa-solid fa-circle-check"></i><span>¡Pase listo! Ahora juega y gana</span><i class="fa-solid fa-trophy"></i></a>
 </div>
 </section>
 <!-- MINIJUEGO 1: HOT WHEELS TURBO TRACK (PANTALLA TÁCTIL MÓVIL) -->
@@ -853,52 +899,54 @@ Ranking en vivo · <span class="text-green-400">TOP 5</span></h3>
       try {
         initAudio();
         const now = audioCtx.currentTime;
+        const duration = intense ? 1.15 : 0.78;
+        const peakFreq = intense ? 230 : 165;   // fundamental grave, carácter de motor
+        const baseFreq = intense ? 46 : 54;
 
-        const osc1 = audioCtx.createOscillator();
-        const gain1 = audioCtx.createGain();
-        osc1.type = 'sawtooth';
-
-        const osc2 = audioCtx.createOscillator();
-        const gain2 = audioCtx.createGain();
-        osc2.type = 'triangle';
-
+        // Filtro + saturación (growl de escape)
         const filter = audioCtx.createBiquadFilter();
-        filter.type = 'lowpass';
+        filter.type = 'lowpass'; filter.Q.value = 7;
+        filter.frequency.setValueAtTime(170, now);
+        filter.frequency.exponentialRampToValueAtTime(intense ? 2700 : 1800, now + 0.28);
+        filter.frequency.exponentialRampToValueAtTime(240, now + duration);
+        const shaper = audioCtx.createWaveShaper();
+        { const c = new Float32Array(256); for (let i=0;i<256;i++){ const x=i/128-1; c[i]=Math.tanh(x*2.4); } shaper.curve = c; }
+        filter.connect(shaper); shaper.connect(masterGain);
 
-        const duration = intense ? 1.0 : 0.65;
-        const peakFreq = intense ? 560 : 380;
-        const baseFreq = 80;
+        // 3 sawtooth desafinados = motor "gordo"
+        [0, -8, 6].forEach((det, idx) => {
+          const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+          o.type = 'sawtooth'; o.detune.value = det;
+          o.frequency.setValueAtTime(baseFreq, now);
+          o.frequency.exponentialRampToValueAtTime(peakFreq, now + (intense ? 0.34 : 0.2));
+          o.frequency.exponentialRampToValueAtTime(baseFreq * 1.35, now + duration);
+          g.gain.setValueAtTime(0.001, now);
+          g.gain.linearRampToValueAtTime(idx===0 ? 0.3 : 0.17, now + 0.11);
+          g.gain.exponentialRampToValueAtTime(0.001, now + duration);
+          o.connect(g); g.connect(filter);
+          o.start(now); o.stop(now + duration);
+        });
 
-        osc1.frequency.setValueAtTime(baseFreq, now);
-        osc1.frequency.exponentialRampToValueAtTime(peakFreq, now + (intense ? 0.35 : 0.22));
-        osc1.frequency.exponentialRampToValueAtTime(110, now + duration);
+        // Sub-bass para "pecho"
+        const sub = audioCtx.createOscillator(), sg = audioCtx.createGain();
+        sub.type = 'sine';
+        sub.frequency.setValueAtTime(baseFreq/2, now);
+        sub.frequency.exponentialRampToValueAtTime(peakFreq/2, now + (intense ? 0.34 : 0.2));
+        sub.frequency.exponentialRampToValueAtTime(baseFreq/1.5, now + duration);
+        sg.gain.setValueAtTime(0.001, now); sg.gain.linearRampToValueAtTime(0.42, now + 0.09); sg.gain.exponentialRampToValueAtTime(0.001, now + duration);
+        sub.connect(sg); sg.connect(masterGain);
+        sub.start(now); sub.stop(now + duration);
 
-        osc2.frequency.setValueAtTime(baseFreq / 2, now);
-        osc2.frequency.exponentialRampToValueAtTime(peakFreq / 1.5, now + (intense ? 0.35 : 0.22));
-        osc2.frequency.exponentialRampToValueAtTime(55, now + duration);
-
-        filter.frequency.setValueAtTime(250, now);
-        filter.frequency.exponentialRampToValueAtTime(2200, now + 0.25);
-        filter.frequency.exponentialRampToValueAtTime(320, now + duration);
-
-        gain1.gain.setValueAtTime(0.01, now);
-        gain1.gain.linearRampToValueAtTime(0.35, now + 0.15);
-        gain1.gain.exponentialRampToValueAtTime(0.001, now + duration);
-
-        gain2.gain.setValueAtTime(0.01, now);
-        gain2.gain.linearRampToValueAtTime(0.25, now + 0.15);
-        gain2.gain.exponentialRampToValueAtTime(0.001, now + duration);
-
-        osc1.connect(gain1);
-        osc2.connect(gain2);
-        gain1.connect(filter);
-        gain2.connect(filter);
-        filter.connect(masterGain);
-
-        osc1.start(now);
-        osc2.start(now);
-        osc1.stop(now + duration);
-        osc2.stop(now + duration);
+        // Grit de escape (ruido filtrado)
+        const bs = Math.floor(audioCtx.sampleRate * duration);
+        const buf = audioCtx.createBuffer(1, bs, audioCtx.sampleRate), dd = buf.getChannelData(0);
+        for (let i=0;i<bs;i++) dd[i] = (Math.random()*2-1)*0.5;
+        const nz = audioCtx.createBufferSource(); nz.buffer = buf;
+        const nf = audioCtx.createBiquadFilter(); nf.type='bandpass'; nf.frequency.value = intense ? 900 : 640; nf.Q.value = 0.8;
+        const ng = audioCtx.createGain();
+        ng.gain.setValueAtTime(0.001, now); ng.gain.linearRampToValueAtTime(intense ? 0.14 : 0.09, now + 0.1); ng.gain.exponentialRampToValueAtTime(0.001, now + duration);
+        nz.connect(nf); nf.connect(ng); ng.connect(masterGain);
+        nz.start(now); nz.stop(now + duration);
       } catch(e) {}
     }
 
@@ -1086,8 +1134,81 @@ Ranking en vivo · <span class="text-green-400">TOP 5</span></h3>
       }
       const extAudio = document.getElementById('bg-music');
       if (extAudio) extAudio.pause();
+      stopChiptune();
       const led = document.getElementById('musicLed');
       if (led) led.classList.add('hidden');
+    }
+
+
+    // ===== CHIPTUNE ORIGINAL ESTILO SNES (compuesto para Santi, sintetizado en vivo) =====
+    const CHIP = { bpm:152, step:0, nextTime:0, timer:null, out:null, noise:null };
+    const _ = 0;
+    const CHIP_MEL = [
+      69,_,72,_,76,_,74,72, 74,_,72,_,69,_,67,_,   // Am
+      65,_,69,_,72,_,74,_,  72,_,69,_,72,74,76,_,  // F
+      72,_,76,_,79,_,77,76, 74,_,72,_,74,_,76,_,   // C
+      79,_,_,_,74,_,71,_,   74,_,79,_,81,_,79,_,   // G
+      81,_,79,_,76,_,79,_,  81,_,84,_,83,_,81,_,   // Am
+      77,_,76,_,74,_,72,_,  74,_,76,_,77,_,79,_,   // F
+      76,_,74,_,72,_,74,_,  71,_,72,_,74,_,_,_,    // C → G
+      76,_,_,_,80,_,_,_,    83,_,80,_,76,_,74,_    // E (vuelta)
+    ];
+    const CHIP_PROG = ['Am','F','C','G','Am','F','C','E'];
+    const CHIP_BASS = [45,41,48,43,45,41,48,40];
+    const CHIP_CHORDS = { Am:[69,72,76], F:[65,69,72], C:[72,76,79], G:[67,71,74], E:[64,68,71] };
+    function chipMidi(m){ return 440*Math.pow(2,(m-69)/12); }
+    function chipInitBus(){
+      if (CHIP.out) return;
+      const g=audioCtx.createGain(); g.gain.value=0.22;
+      const delay=audioCtx.createDelay(); delay.delayTime.value=0.18;
+      const fb=audioCtx.createGain(); fb.gain.value=0.28;
+      const lp=audioCtx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=2600;
+      const wet=audioCtx.createGain(); wet.gain.value=0.22;
+      g.connect(masterGain); g.connect(delay); delay.connect(lp); lp.connect(fb); fb.connect(delay); lp.connect(wet); wet.connect(masterGain);
+      CHIP.out=g;
+      const n=audioCtx.sampleRate, b=audioCtx.createBuffer(1,n,n), d=b.getChannelData(0);
+      for (let i=0;i<n;i++) d[i]=Math.random()*2-1; CHIP.noise=b;
+    }
+    function chipTone(t,freq,dur,type,vol,cut){
+      const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type=type; o.frequency.setValueAtTime(freq,t);
+      let node=o; if(cut){ const f=audioCtx.createBiquadFilter(); f.type='lowpass'; f.frequency.value=cut; o.connect(f); node=f; }
+      node.connect(g); g.connect(CHIP.out);
+      g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+0.008); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      o.start(t); o.stop(t+dur+0.02);
+    }
+    function chipNoise(t,dur,vol,type,freq){
+      const src=audioCtx.createBufferSource(); src.buffer=CHIP.noise;
+      const f=audioCtx.createBiquadFilter(); f.type=type; f.frequency.value=freq;
+      const g=audioCtx.createGain(); g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+      src.connect(f); f.connect(g); g.connect(CHIP.out); src.start(t, Math.random()*0.5); src.stop(t+dur+0.02);
+    }
+    function chipKick(t){
+      const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type='sine';
+      o.frequency.setValueAtTime(140,t); o.frequency.exponentialRampToValueAtTime(42,t+0.12);
+      g.gain.setValueAtTime(0.55,t); g.gain.exponentialRampToValueAtTime(0.0001,t+0.16);
+      o.connect(g); g.connect(CHIP.out); o.start(t); o.stop(t+0.18);
+    }
+    function chipStep(st,t){
+      const sd=60/CHIP.bpm/4, bar=Math.floor(st/16)%8, k=st%16;
+      const m=CHIP_MEL[st%128]; if(m) chipTone(t,chipMidi(m),sd*1.8,'square',0.11,3200);
+      let root=CHIP_BASS[bar]; if(bar===6&&k>=8) root=43;
+      chipTone(t,chipMidi(root+(k%2?12:0)),sd*0.9,'triangle',0.32,0);
+      const ch=CHIP_CHORDS[(bar===6&&k>=8)?'G':CHIP_PROG[bar]]; let a=ch[k%3]+12; if(a>86) a-=12;
+      chipTone(t,chipMidi(a),sd*0.7,'square',0.035,4200);
+      if(k===0||k===8||(k===10&&bar%2)) chipKick(t);
+      if(k===4||k===12) chipNoise(t,0.13,0.22,'bandpass',1800);
+      if(k%2===1) chipNoise(t,0.035,0.07,'highpass',7000);
+    }
+    function chipSched(){ const sd=60/CHIP.bpm/4; while(CHIP.nextTime<audioCtx.currentTime+0.14){ chipStep(CHIP.step,CHIP.nextTime); CHIP.nextTime+=sd; CHIP.step++; } }
+    function startChiptune(){
+      try{ initAudio(); chipInitBus(); if(CHIP.timer) return;
+        const t=audioCtx.currentTime; CHIP.out.gain.cancelScheduledValues(t); CHIP.out.gain.setValueAtTime(0.22,t);
+        CHIP.step=0; CHIP.nextTime=t+0.06; CHIP.timer=setInterval(chipSched,25);
+      }catch(e){}
+    }
+    function stopChiptune(){
+      if(CHIP.timer){ clearInterval(CHIP.timer); CHIP.timer=null; }
+      try{ if(CHIP.out){ const t=audioCtx.currentTime; CHIP.out.gain.cancelScheduledValues(t); CHIP.out.gain.setValueAtTime(CHIP.out.gain.value,t); CHIP.out.gain.linearRampToValueAtTime(0.0001,t+0.25); } }catch(e){}
     }
 
     function activateEnginesAndMusic() {
@@ -1101,16 +1222,25 @@ Ranking en vivo · <span class="text-green-400">TOP 5</span></h3>
       if (isSoundMuted) return;
       try {
         initAudio();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-        gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
-        osc.connect(gain);
-        gain.connect(masterGain);
-        osc.start();
-        osc.stop(audioCtx.currentTime + duration);
+        const now = audioCtx.currentTime;
+        // "Clic" de tablero de carreras: golpe corto + tono con caída de tono
+        const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+        const f = audioCtx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 3200;
+        o.type = 'square';
+        o.frequency.setValueAtTime(freq * 1.7, now);
+        o.frequency.exponentialRampToValueAtTime(freq, now + 0.045);
+        g.gain.setValueAtTime(0.0001, now);
+        g.gain.exponentialRampToValueAtTime(0.14, now + 0.006);
+        g.gain.exponentialRampToValueAtTime(0.0008, now + Math.max(0.09, duration));
+        o.connect(f); f.connect(g); g.connect(masterGain);
+        o.start(now); o.stop(now + Math.max(0.1, duration) + 0.02);
+        // transiente (ruido muy corto) para que "suene" a botón físico
+        const n = Math.floor(audioCtx.sampleRate * 0.02), buf = audioCtx.createBuffer(1, n, audioCtx.sampleRate), d = buf.getChannelData(0);
+        for (let i=0;i<n;i++) d[i] = (Math.random()*2-1) * (1 - i/n);
+        const src = audioCtx.createBufferSource(); src.buffer = buf;
+        const hp = audioCtx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 2500;
+        const ng = audioCtx.createGain(); ng.gain.value = 0.09;
+        src.connect(hp); hp.connect(ng); ng.connect(masterGain); src.start(now);
       } catch(e) {}
     }
 
@@ -1269,11 +1399,13 @@ Ranking en vivo · <span class="text-green-400">TOP 5</span></h3>
     gpPassImg.src = "santi.webp";
 
     function roundRectPath(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+    function drawLock(ctx,x,y,c){c=c||'#9fdcff';ctx.save();ctx.strokeStyle=c;ctx.fillStyle=c;ctx.lineWidth=2.2;ctx.beginPath();ctx.arc(x,y-3,4.2,Math.PI,2*Math.PI);ctx.stroke();roundRectPath(ctx,x-6,y-3,12,9.5,2.2);ctx.fill();ctx.restore();}
+    function drawFakeQR(ctx,x,y,s){ctx.save();ctx.fillStyle='#f3efe9';roundRectPath(ctx,x-4,y-4,s+8,s+8,6);ctx.fill();const n=7,c=s/n;ctx.fillStyle='#140404';for(let r=0;r<n;r++)for(let col=0;col<n;col++){if(((r*31+col*17+5)%3)===0)ctx.fillRect(x+col*c,y+r*c,c,c);}function finder(fx,fy){ctx.fillStyle='#140404';ctx.fillRect(fx,fy,c*3,c*3);ctx.fillStyle='#f3efe9';ctx.fillRect(fx+c*0.6,fy+c*0.6,c*1.8,c*1.8);ctx.fillStyle='#140404';ctx.fillRect(fx+c,fy+c,c,c);}finder(x,y);finder(x+s-c*3,y);finder(x,y+s-c*3);ctx.restore();}
 
     function drawVipPass() {
       const canvas = document.getElementById('vipPassCanvas');
       if (!canvas) return;
-      const W = 700, H = 440, S = 2;
+      const W = 700, H = 470, S = 2;
       if (canvas.width !== W*S){ canvas.width = W*S; canvas.height = H*S; }
       const ctx = canvas.getContext('2d');
       ctx.setTransform(S,0,0,S,0,0);
@@ -1285,100 +1417,100 @@ Ranking en vivo · <span class="text-green-400">TOP 5</span></h3>
       const pilotCount = countInput ? countInput.value : '2';
       const bib = (typeof gpBibV!=='undefined' && gpBibV) ? gpBibV : '----';
 
-      const bg = ctx.createLinearGradient(0,0,W,H);
-      bg.addColorStop(0,'#0a1230'); bg.addColorStop(.5,'#0b1020'); bg.addColorStop(1,'#1a0d05');
-      ctx.fillStyle = bg; roundRectPath(ctx,0,0,W,H,26); ctx.fill();
-      ctx.fillStyle = 'rgba(255,255,255,0.03)';
-      for (let y=16;y<H;y+=16){ for (let x=16;x<W;x+=16){ ctx.fillRect(x,y,2,2); } }
-
-      // Pista de carreras de fondo (tenue)
-      ctx.save();
-      roundRectPath(ctx,10,10,W-20,H-20,22); ctx.clip();
-      ctx.lineCap='round'; ctx.lineJoin='round';
-      ctx.globalAlpha=0.09; ctx.strokeStyle='#6b7a99'; ctx.lineWidth=64;
-      ctx.beginPath(); ctx.moveTo(-50,370);
-      ctx.bezierCurveTo(150,250, 250,470, 470,340);
-      ctx.bezierCurveTo(630,250, 690,300, 770,200);
-      ctx.stroke();
-      ctx.globalAlpha=0.12; ctx.strokeStyle='#ffffff'; ctx.lineWidth=3; ctx.setLineDash([16,14]);
-      ctx.beginPath(); ctx.moveTo(-50,370);
-      ctx.bezierCurveTo(150,250, 250,470, 470,340);
-      ctx.bezierCurveTo(630,250, 690,300, 770,200);
-      ctx.stroke(); ctx.setLineDash([]);
-      // bandera a cuadros tenue arriba a la izquierda
-      ctx.globalAlpha=0.06;
-      for (let r=0;r<4;r++){ for (let c=0;c<6;c++){ if((r+c)%2===0){ ctx.fillStyle='#ffffff'; ctx.fillRect(40+c*18, 150+r*18, 18, 18); } } }
+      // ====== PASE VIP · ESTILO F1 PADDOCK ======
+      const F='"Chakra Petch", Impact, sans-serif', O='"Outfit", sans-serif';
+      // Base negra carbono
+      ctx.save(); roundRectPath(ctx,0,0,W,H,26); ctx.clip();
+      const base=ctx.createLinearGradient(0,0,W,H); base.addColorStop(0,'#16161b'); base.addColorStop(1,'#060608');
+      ctx.fillStyle=base; ctx.fillRect(0,0,W,H);
+      ctx.globalAlpha=0.05; ctx.fillStyle='#fff';
+      for(let y=0;y<H;y+=6){ for(let x=(y/6)%2?3:0;x<W;x+=6){ ctx.fillRect(x,y,3,3); } }
+      ctx.globalAlpha=1;
+      // Panel rojo diagonal (izquierda)
+      const SX1=318, SX2=258;
+      const rg=ctx.createLinearGradient(0,0,SX1,H); rg.addColorStop(0,'#ff1a1a'); rg.addColorStop(.55,'#d0000c'); rg.addColorStop(1,'#7c0008');
+      ctx.fillStyle=rg; ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(SX1,0); ctx.lineTo(SX2,H); ctx.lineTo(0,H); ctx.closePath(); ctx.fill();
+      // líneas de velocidad sobre el rojo
+      ctx.save(); ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(SX1,0); ctx.lineTo(SX2,H); ctx.lineTo(0,H); ctx.closePath(); ctx.clip();
+      ctx.globalAlpha=0.10; ctx.strokeStyle='#fff'; ctx.lineWidth=2;
+      for(let i=0;i<14;i++){ const yy=30+i*32; ctx.beginPath(); ctx.moveTo(-20,yy+40); ctx.lineTo(360,yy-60); ctx.stroke(); }
+      ctx.globalAlpha=0.13; ctx.fillStyle='#000'; ctx.font='700 330px '+F; ctx.textAlign='left'; ctx.fillText('4', 18, H-14);
+      // brillo radial detrás de Santi
+      ctx.globalAlpha=1; const glow=ctx.createRadialGradient(148,212,20,148,212,175); glow.addColorStop(0,'rgba(255,214,90,0.55)'); glow.addColorStop(1,'rgba(255,214,90,0)');
+      ctx.fillStyle=glow; ctx.fillRect(0,0,SX1,H);
+      ctx.restore();
+      // filo dorado de la diagonal
+      ctx.strokeStyle='#ffd100'; ctx.lineWidth=4; ctx.beginPath(); ctx.moveTo(SX1+4,0); ctx.lineTo(SX2+4,H); ctx.stroke();
+      ctx.strokeStyle='rgba(255,209,0,0.35)'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(SX1+13,0); ctx.lineTo(SX2+13,H); ctx.stroke();
       ctx.restore();
 
-      ctx.lineWidth = 6;
-      const bgrad = ctx.createLinearGradient(0,0,W,H);
-      bgrad.addColorStop(0,'#ff6a00'); bgrad.addColorStop(.5,'#ffd100'); bgrad.addColorStop(1,'#e8262b');
-      ctx.strokeStyle = bgrad; roundRectPath(ctx,5,5,W-10,H-10,23); ctx.stroke();
-
-      const sq=16;
-      ctx.save(); roundRectPath(ctx,16,16,W-32,22,8); ctx.clip();
-      for (let i=0;i<Math.ceil((W-32)/sq);i++){ ctx.fillStyle = (i%2)? '#101010':'#ffffff'; ctx.fillRect(16+i*sq,16,sq,22); }
-      ctx.restore();
-
-      ctx.textAlign='left';
-      ctx.fillStyle='#ffd100';
-      ctx.font='900 30px "Chakra Petch", Impact, sans-serif';
-      ctx.fillText('GRAN PRIX SANTIAGO #4', 40, 92);
-      ctx.fillStyle='#ff6a00';
-      ctx.font='italic 900 20px "Chakra Petch", Impact, sans-serif';
-      ctx.fillText('PASE DE PILOTO VIP', 40, 118);
-      ctx.fillStyle='rgba(255,255,255,.28)'; ctx.fillRect(40,132,W-280,2);
-
-      const L=40;
-      ctx.fillStyle='#8fa0c0'; ctx.font='700 13px "Outfit", sans-serif';
-      ctx.fillText('FAMILIA AUTORIZADA', L, 166);
-      ctx.fillStyle='#ffffff'; ctx.font='900 34px "Chakra Petch", Impact, sans-serif';
-      let nm = pilotName; if(nm.length>20){ nm = nm.slice(0,20); }
-      ctx.fillText(nm, L, 204);
-
-      ctx.fillStyle='#8fa0c0'; ctx.font='700 13px "Outfit", sans-serif';
-      ctx.fillText('CUPOS RESERVADOS', L, 246);
-      ctx.fillStyle='#ffd100'; ctx.font='900 24px "Chakra Petch", Impact, sans-serif';
-      ctx.fillText(pilotCount+' '+(parseInt(pilotCount)===1?'PILOTO':'PILOTOS'), L, 274);
-
-      ctx.fillStyle='#8fa0c0'; ctx.font='700 13px "Outfit", sans-serif';
-      ctx.fillText('NÚMERO DE LARGADA', L, 312);
-      ctx.fillStyle='#19b7ff'; ctx.font='900 30px "Chakra Petch", Impact, sans-serif';
-      ctx.fillText('#'+bib, L, 344);
-
-      ctx.fillStyle='#16a34a'; roundRectPath(ctx,L,360,286,36,10); ctx.fill();
-      ctx.strokeStyle='#86efac'; ctx.lineWidth=2; roundRectPath(ctx,L,360,286,36,10); ctx.stroke();
-      ctx.fillStyle='#ffffff'; ctx.font='900 15px "Chakra Petch", Impact, sans-serif';
-      ctx.fillText('✓ PILOTO OFICIAL EN GRILLA', L+16, 384);
-
-      const px=W-210, py=150, pw=170, ph=170;
-      ctx.save();
-      const rg=ctx.createLinearGradient(px,py,px+pw,py+ph);
-      rg.addColorStop(0,'#ff6a00'); rg.addColorStop(1,'#19b7ff');
-      ctx.fillStyle=rg; roundRectPath(ctx,px-5,py-5,pw+10,ph+10,22); ctx.fill();
-      roundRectPath(ctx,px,py,pw,ph,18); ctx.clip();
-      ctx.fillStyle='#0b1020'; ctx.fillRect(px,py,pw,ph);
+      // Santi (escudo original, sin marco extra)
       if(gpPassImg.complete && gpPassImg.naturalWidth){
-        const ar=gpPassImg.naturalWidth/gpPassImg.naturalHeight, tr=pw/ph; let dw,dh,dx,dy;
-        if(ar>tr){ dh=ph; dw=ph*ar; dx=px-(dw-pw)/2; dy=py; } else { dw=pw; dh=pw/ar; dx=px; dy=py-(dh-ph)/2; }
-        ctx.drawImage(gpPassImg,dx,dy,dw,dh);
+        const s=262, ix=148-s/2, iy=200-s/2;
+        ctx.save(); ctx.shadowColor='rgba(0,0,0,0.55)'; ctx.shadowBlur=26; ctx.shadowOffsetY=10;
+        ctx.drawImage(gpPassImg, ix, iy, s, s*gpPassImg.naturalHeight/gpPassImg.naturalWidth); ctx.restore();
       }
-      ctx.restore();
+      // Rótulo bajo Santi
+      ctx.textAlign='center'; ctx.fillStyle='#fff'; ctx.font='italic 700 19px '+F;
+      ctx.fillText('PILOTO OFICIAL', 146, 370);
+      ctx.fillStyle='#ffd100'; ctx.font='700 13px '+F; ctx.fillText('★ SANTIAGO #4 ★', 146, 391);
 
-      ctx.save(); ctx.translate(W-125, 352); ctx.rotate(-0.1);
-      ctx.strokeStyle='#ff6a00'; ctx.lineWidth=3; roundRectPath(ctx,-82,-26,164,52,8); ctx.stroke();
-      ctx.fillStyle='rgba(255,106,0,.14)'; roundRectPath(ctx,-82,-26,164,52,8); ctx.fill();
-      ctx.fillStyle='#ffd100'; ctx.textAlign='center'; ctx.font='900 15px "Chakra Petch", Impact, sans-serif';
-      ctx.fillText('ACCESO PITS', 0, -5);
-      ctx.fillStyle='#ffffff'; ctx.font='900 14px "Chakra Petch", Impact, sans-serif';
-      ctx.fillText('3:30 PM • 6 DIC', 0, 15);
-      ctx.restore();
-
+      // ===== Columna derecha =====
+      const R=336, RW=W-R-30;
       ctx.textAlign='left';
-      ctx.fillStyle='#8fa0c0'; ctx.font='700 12px "Outfit", sans-serif';
-      ctx.fillText('PISTA: CALLE 57N 3AN-108 • LA FLORA, CALI', L, 422);
-      let bx=W-250;
-      for (let i=0;i<46;i++){ const bw=(i%4===0)?3:((i%3===0)?2:1); ctx.fillStyle='#ffffff'; ctx.fillRect(bx,410,bw,16); bx+=bw+2; }
+      ctx.fillStyle='#ff2d2d'; ctx.font='700 12.5px '+F; ctx.fillText('GRAN PRIX SANTIAGO #4  ·  6 DIC 2026', R, 46);
+      ctx.fillStyle='#ffffff'; ctx.font='italic 700 42px '+F; ctx.fillText('PADDOCK PASS', R-2, 90);
+      // pill VIP
+      ctx.save(); roundRectPath(ctx,W-96,24,68,28,14); const vg=ctx.createLinearGradient(W-96,24,W-28,52); vg.addColorStop(0,'#fff1a6'); vg.addColorStop(.5,'#ffd100'); vg.addColorStop(1,'#c98d00'); ctx.fillStyle=vg; ctx.fill();
+      ctx.fillStyle='#5a0006'; ctx.textAlign='center'; ctx.font='700 16px '+F; ctx.fillText('VIP', W-62, 44); ctx.restore();
+      ctx.fillStyle='#ff1a1a'; ctx.fillRect(R,104,64,4); ctx.fillStyle='rgba(255,255,255,0.18)'; ctx.fillRect(R+68,105,RW-68,2);
+
+      // Familia
+      ctx.textAlign='left';
+      ctx.fillStyle='#9aa0ad'; ctx.font='700 11px '+O; ctx.fillText('FAMILIA AUTORIZADA', R, 136);
+      ctx.fillStyle='#ffffff'; let fs=31; ctx.font='700 '+fs+'px '+F;
+      let nm=pilotName; while(ctx.measureText(nm).width>RW && fs>20){ fs--; ctx.font='700 '+fs+'px '+F; }
+      while(ctx.measureText(nm).width>RW && nm.length>3){ nm=nm.slice(0,-2)+'…'; }
+      ctx.fillText(nm, R, 170);
+
+      // Stats: cupos | hora
+      const sY=194, sW=(RW-12)/2, sH=52;
+      [[ 'CUPOS', pilotCount+' '+(parseInt(pilotCount)===1?'PILOTO':'PILOTOS') ], ['LARGADA','3:30 PM']].forEach((it,i)=>{
+        const x=R+i*(sW+12);
+        ctx.fillStyle='rgba(255,255,255,0.06)'; roundRectPath(ctx,x,sY,sW,sH,10); ctx.fill();
+        ctx.strokeStyle='rgba(255,255,255,0.12)'; ctx.lineWidth=1; roundRectPath(ctx,x,sY,sW,sH,10); ctx.stroke();
+        ctx.fillStyle='#9aa0ad'; ctx.font='700 10px '+O; ctx.fillText(it[0], x+12, sY+19);
+        ctx.fillStyle='#ffd100'; ctx.font='700 19px '+F; ctx.fillText(it[1], x+12, sY+42);
+      });
+
+      // Código familiar (protagonista)
+      const cY=264, cH=112;
+      ctx.save(); const cgr=ctx.createLinearGradient(R,cY,R+RW,cY+cH); cgr.addColorStop(0,'rgba(255,209,0,0.16)'); cgr.addColorStop(1,'rgba(255,209,0,0.03)');
+      ctx.fillStyle=cgr; roundRectPath(ctx,R,cY,RW,cH,12); ctx.fill();
+      ctx.strokeStyle='rgba(255,209,0,0.55)'; ctx.lineWidth=1.5; roundRectPath(ctx,R,cY,RW,cH,12); ctx.stroke();
+      ctx.fillStyle='#ffd100'; roundRectPath(ctx,R,cY,6,cH,3); ctx.fill(); ctx.restore();
+      ctx.fillStyle='#ffd86a'; ctx.font='700 11px '+O; ctx.fillText('CÓDIGO FAMILIAR', R+20, cY+24);
+      drawLock(ctx, R+136, cY+21, '#ffd86a');
+      ctx.fillStyle='#ffffff'; ctx.font='700 46px '+F; ctx.fillText('#'+bib, R+18, cY+70);
+      ctx.fillStyle='#c9ccd4'; ctx.font='600 10.5px '+O;
+      ctx.fillText('Con este número toda tu familia juega desde', R+20, cY+88);
+      ctx.fillText('otro celular. Solo ustedes lo conocen.', R+20, cY+102);
+      // QR decorativo dentro del bloque
+      drawFakeQR(ctx, R+RW-74, cY+30, 56);
+
+      // Banda inferior
+      const bY=H-50;
+      ctx.save(); roundRectPath(ctx,0,0,W,H,26); ctx.clip();
+      ctx.fillStyle='#0a0a0d'; ctx.fillRect(SX2-6,bY,W,50);
+      const sq=10; for(let i=0;i<Math.ceil(W/sq);i++){ ctx.fillStyle=(i%2)?'#0a0a0d':'#efefef'; ctx.fillRect(SX2-6+i*sq,bY,sq,6); }
+      ctx.restore();
+      ctx.textAlign='left'; ctx.fillStyle='#9aa0ad'; ctx.font='700 10.5px '+O;
+      ctx.fillText('📍 CALLE 57N 3AN-108 · LA FLORA, CALI', R, H-19);
+      let bx=W-112; for(let i=0;i<22;i++){ const bw=(i%4===0)?3:((i%3===0)?2:1); ctx.fillStyle='#e9e9ee'; ctx.fillRect(bx,H-36,bw,18); bx+=bw+2; }
+
+      // Borde dorado fino
+      ctx.lineWidth=3; const fo=ctx.createLinearGradient(0,0,W,H); fo.addColorStop(0,'#fff1a6'); fo.addColorStop(.5,'#ffd100'); fo.addColorStop(1,'#b37e00');
+      ctx.strokeStyle=fo; roundRectPath(ctx,1.5,1.5,W-3,H-3,25); ctx.stroke();
     }
 
     function downloadVipPass() {
@@ -1386,10 +1518,19 @@ Ranking en vivo · <span class="text-green-400">TOP 5</span></h3>
       playVictoryChime();
       const canvas = document.getElementById('vipPassCanvas');
       if (!canvas) return;
-      const link = document.createElement('a');
-      link.download = 'Pase-VIP-Santiago-4.png';
-      link.href = canvas.toDataURL('image/png');
-      link.click();
+      try{
+        const link = document.createElement('a');
+        link.download = 'Pase-VIP-Santiago-4.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }catch(e){}
+      // Desbloquea el juego después de descargar el pase
+      try{
+        gpSv('gp_passDownloaded','1');
+        var gw=document.getElementById('gameStepWrap'); if(gw) gw.classList.remove('hidden');
+        var ph=document.getElementById('passLockHint'); if(ph) ph.classList.add('hidden');
+        var pd=document.getElementById('passDoneNext'); if(pd) pd.classList.remove('hidden');
+      }catch(e){}
     }
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -1593,6 +1734,7 @@ Ranking en vivo · <span class="text-green-400">TOP 5</span></h3>
 
       document.getElementById('rsvpForm').classList.add('hidden');
       document.getElementById('rsvpSuccess').classList.remove('hidden');
+      try{ var _dl=(gpLd('gp_passDownloaded')==='1'); var _gw=document.getElementById('gameStepWrap'), _ph=document.getElementById('passLockHint'); if(_gw)_gw.classList.toggle('hidden',!_dl); if(_ph)_ph.classList.toggle('hidden',_dl); }catch(e){}
       try{ gpPost('inscripcion',{familia:name,whatsapp:phone,cupos:count,asistencia:attendance,mensaje:msg,largada:(typeof gpBibV!=='undefined'?(gpBibV||''):'')}); }catch(e){}
       // Blindaje: deja guardada la familia en este dispositivo
       try{ gpSv('gp_fam', name); if(gpBibV)gpSv('gp_bib', gpBibV); }catch(e){}
@@ -1895,6 +2037,12 @@ function gpRefresh(){
   if(document.readyState!=='loading') go(); else document.addEventListener('DOMContentLoaded',go);
 })();
 
+function toggleVerse(){var t=document.getElementById('verseToggle'),b=document.getElementById('verseBody');if(!t||!b)return;var open=!b.classList.contains('open');b.classList.toggle('open',open);t.setAttribute('aria-expanded',open?'true':'false');b.setAttribute('aria-hidden',open?'false':'true');try{playBeep(660,0.08);}catch(e){}}
+
+function openHelp(){var h=document.getElementById('helpSheet');if(!h)return;h.classList.add('open');document.body.style.overflow='hidden';try{playBeep(720,0.08);}catch(e){}}
+function closeHelp(){var h=document.getElementById('helpSheet');if(!h)return;h.classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeHelp();});
+
 /* ===== Consultas a la hoja (JSONP) · familias únicas · ingreso con código ===== */
 function gpAsk(params){return new Promise(function(res){try{if(typeof GP==='undefined'||!GP.endpoint)return res(null);var cb='gpAsk'+Math.floor(Math.random()*1e9),done=false,sc=document.createElement('script');function cl(){try{delete window[cb]}catch(e){window[cb]=undefined}if(sc.parentNode)sc.parentNode.removeChild(sc);}window[cb]=function(d){if(done)return;done=true;res(d);cl();};sc.onerror=function(){if(!done){done=true;res(null);cl();}};var q=Object.keys(params).map(function(k){return encodeURIComponent(k)+'='+encodeURIComponent(params[k])}).join('&');sc.src=GP.endpoint+'?'+q+'&callback='+cb+'&t='+Date.now();document.body.appendChild(sc);setTimeout(function(){if(!done){done=true;res(null);cl();}},9000);}catch(e){res(null);}});}
 function famDisp(f){f=String(f||'').trim();return /^familia\b/i.test(f)?f:('Familia '+f);}
@@ -1937,4 +2085,28 @@ async function handleRSVP(e){
   try{handleRSVPCore({preventDefault:function(){}});}finally{window.__bibOverride='';}
 }
 </script>
+
+<!-- ===== BOTÓN FLOTANTE DE AYUDA ===== -->
+<button type="button" id="helpFab" onclick="openHelp()" aria-label="Ayuda" aria-haspopup="dialog">
+<span class="help-q">?</span><span class="help-lbl">AYUDA</span>
+</button>
+<div id="helpSheet" class="help-overlay" role="dialog" aria-modal="true" aria-labelledby="helpTitle" onclick="if(event.target===this)closeHelp()">
+<div class="help-card">
+<div class="help-head">
+<div><div class="help-kicker">PITS DE AYUDA</div><h3 id="helpTitle">¿Cómo funciona?</h3></div>
+<button type="button" class="help-x" onclick="closeHelp()" aria-label="Cerrar ayuda">✕</button>
+</div>
+<div class="help-body">
+<details open><summary><span>1</span>Confirmar asistencia</summary><p>En <b>Registro de pilotos</b> escribe el nombre de tu familia (ej: <i>Familia García</i>), cuántos van y si asistirás. El WhatsApp es <b>opcional</b>: si lo dejas, te aparece un botón para recibir tu confirmación. Al enviar recibes tu <b>número de largada</b>.</p></details>
+<details><summary><span>2</span>Descargar el Pase VIP</summary><p>Toca <b>Descarga tu Pase VIP</b> (botón azul), revisa el nombre y los cupos y toca <b>Descargar mi Pase VIP</b>. Se guarda como imagen en tu celular. Al descargarlo se <b>desbloquea el juego</b>.</p></details>
+<details><summary><span>3</span>Cómo se juega</summary><p>Cambia de carril con las flechas ← → (o tocando los lados de la pista). Esquiva conos, llantas y carros. Las <b>monedas cargan el NITRO</b>: cuando la barra diga <b>LISTO</b>, toca <b>NITRO</b> (en computador, la <b>barra espaciadora</b>). La velocidad sube poco a poco.</p></details>
+<details><summary><span>4</span>Cómo ganar el premio</summary><p>Juega con tu familia registrada: <b>cada partida envía tu puntaje</b> y en el ranking queda el mejor de cada familia. Se aceptan puntajes hasta el <b>sábado 5 de diciembre</b>. La familia con el mayor puntaje gana un <b>premio sorpresa</b> que se entrega en la fiesta.</p></details>
+<details><summary><span>5</span>Jugar desde otro celular</summary><p>Toca <b>¿Juegas desde otro teléfono?</b> debajo del registro y escribe tu <b>código familiar</b> (el #número de tu pase) <b>o el celular</b> con el que te registraste, más el nombre de tu familia igual al registro. Así todos suman para la misma familia. El código <b>solo lo conoce tu familia</b>.</p></details>
+<details><summary><span>6</span>Ranking en vivo</summary><p>El <b>Top 5 de familias</b> se actualiza solo. Si acabas de jugar, espera unos segundos o toca <b>actualizar</b>.</p></details>
+<details><summary><span>7</span>Lugar y hora</summary><p><b>Domingo 6 de diciembre · 3:30 PM</b><br>Calle 57N 3AN-108, La Flora, Cali. En <b>Telemetría de la pista</b> tienes los botones para abrir <b>Maps/Waze</b> y <b>agendar el evento</b>.</p></details>
+<details><summary><span>8</span>Sonido y música</summary><p>Usa el botón naranja de arriba a la derecha para activar o silenciar la música y los efectos. Si no suena, revisa que tu celular no esté en silencio.</p></details>
+</div>
+<button type="button" class="help-ok" onclick="closeHelp()">¡ENTENDIDO, A CORRER! 🏁</button>
+</div>
+</div>
 </body></html>
