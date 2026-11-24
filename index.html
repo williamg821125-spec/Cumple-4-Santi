@@ -442,14 +442,6 @@ body{padding-top:env(safe-area-inset-top,0px)}
 </div>
 </header>
 
-<!-- BIENVENIDA / GUÍA PARA INVITADOS -->
-<div class="max-w-[430px] mx-auto px-1 mb-1" id="welcomeHint">
-<div class="rounded-2xl px-4 py-3 text-center race-slide-card" style="background:linear-gradient(90deg,rgba(26,82,192,0.22),rgba(249,115,22,0.16));border:1px solid rgba(250,204,21,0.4)">
-<p class="text-sm text-white font-bold leading-snug">🏎️ ¡Bienvenido al Gran Premio de Santi!</p>
-<p class="text-xs text-gray-300 mt-1 leading-snug">Desliza hacia abajo para ver <b class="text-yellow-300">el plan</b>, <b class="text-yellow-300">confirmar tu asistencia</b> y <b class="text-yellow-300">jugar por el premio</b>.</p>
-<div class="mt-1.5 text-yellow-300 text-xl animate-bounce">↓</div>
-</div>
-</div>
 
 <!-- FORMULARIO RSVP OPTIMIZADO PARA MÓVIL (WHATSAPP READY) -->
 <section class="my-6" id="rsvpSection">
@@ -1531,7 +1523,7 @@ Ranking en vivo · <span class="text-green-400">TOP 5</span></h3>
       const phone = phoneInput.value.trim();
       const attendance = attendanceInput ? attendanceInput.value : 'si';
       const msg = messageInput.value.trim();
-      {const d=phone.replace(/\D/g,'');if(d.length>=7){gpBibV=gpNro(d);}else if(!gpBibV&&name){gpBibV=gpNro(name.toLowerCase());} if(gpBibV){gpSv('gp_bib',gpBibV);try{gpRefresh()}catch(e){}}}
+      {const d=phone.replace(/\D/g,'');if(d.length>=7){gpBibV=gpNro(d);}else if(name){gpBibV=gpNro(name.trim().toLowerCase());} if(gpBibV){gpSv('gp_bib',gpBibV);try{gpRefresh()}catch(e){}}}
 
       if (!name) {
         alert('Por favor ingresa tu nombre de piloto o familia.');
@@ -1681,8 +1673,12 @@ function gpBoost(){
 }
 function gpOver(){
  G.st='over';document.body.classList.remove('gp-playing');const sc=gpScore();gpBurst(G.px,GPY,'#ff6a00',30);sfx(playTireScreech);sfx(()=>playBeep(120,.4));
- const esRecord=sc>gpBest; if(esRecord){gpBest=sc;gpSv('gp_best',sc);gpBestDate=new Date().toLocaleDateString('es-CO',{day:'numeric',month:'long'});gpSv('gp_best_date',gpBestDate)}
- const _fam=((($g('guestName')||{}).value||'').trim()); if(_fam){gpBoardSave(_fam,gpBest); if(esRecord)gpPost('puntaje',{juego:'carrera',familia:_fam,largada:gpBibV||'',puntaje:gpBest});}
+ const _fam=((($g('guestName')||{}).value||'').trim());
+ const _fk=_fam?('gp_best_'+_fam.toLowerCase()):'gp_best';
+ const _prevBest=_fam?(+gpLd(_fk)||0):gpBest;
+ const esRecord=sc>_prevBest;
+ if(esRecord){gpBest=sc;gpSv(_fk,sc);gpSv('gp_best',sc);gpBestDate=new Date().toLocaleDateString('es-CO',{day:'numeric',month:'long'});gpSv('gp_best_date',gpBestDate)} else {gpBest=_prevBest;}
+ if(_fam){gpBoardSave(_fam,gpBest); if(sc>0)gpPost('puntaje',{juego:'carrera',familia:_fam,largada:gpBibV||'',puntaje:sc});}
  gpDraw();gpHud();$g('gpOverlay').classList.remove('hidden');
  const fecha=gpBestDate||new Date().toLocaleDateString('es-CO',{day:'numeric',month:'long'});
  if($g('gpTitle')){$g('gpTitle').textContent='¡FELICIDADES!';$g('gpTitle').className='font-racing text-2xl font-black text-yellow-300 uppercase italic mb-1'}
@@ -1694,7 +1690,7 @@ function gpOver(){
   $g('gpMsg').innerHTML='<span class="text-white text-sm">Lograste <b class="text-orange-400">'+sc+' puntos</b></span><br>'+'<span class="text-yellow-300 font-racing text-xs mt-2 inline-block">Regístrate arriba para concursar por el premio y aparecer en el podio.</span>';
  }
  try{triggerRaceConfettiExplosion()}catch(e){}
- if(_fam&&esRecord&&typeof cargarRanking==='function'){setTimeout(function(){try{cargarRanking(true)}catch(e){}},1800);}
+ if(_fam&&typeof cargarRanking==='function'){setTimeout(function(){try{cargarRanking(true)}catch(e){}},2500);setTimeout(function(){try{cargarRanking(true)}catch(e){}},7000);}
 
  if(!isSoundMuted){if(menuWasPlaying)startBackgroundMusic('menu');else stopBackgroundMusic()}
  $g('gpStartBtn').innerHTML='¡OTRA VEZ! '+'<i class="fa-solid fa-car"></i>';gpRefresh();return false;
@@ -1708,6 +1704,7 @@ function reingresar(){
   var bib = raw.length>=7 ? gpNro(raw) : raw;
   gpBibV=bib; gpSv('gp_bib',gpBibV);
   var gn=document.getElementById('guestName'); if(gn)gn.value=fam;
+  try{gpSv('gp_fam',fam); gpBest=+gpLd('gp_best_'+fam.toLowerCase())||0;}catch(e){}
   try{gpRefresh();}catch(e){} try{drawVipPass();}catch(e){}
   try{initAudio();playVictoryChime();}catch(e){}
   var famD=(/^familia\b/i.test(fam.trim())?fam.trim():'Familia '+fam.trim()).replace(/</g,'');
@@ -1733,9 +1730,9 @@ function gpRefresh(){
 }
 (function(){const p=$g('guestPhone'),n=$g('guestName');
  // Blindaje: restaura la familia guardada en este dispositivo
- try{const savedFam=gpLd('gp_fam'); if(n&&savedFam&&!n.value.trim()){n.value=savedFam;}}catch(e){}
+ try{const savedFam=gpLd('gp_fam'); if(n&&savedFam&&!n.value.trim()){n.value=savedFam;} const f0=(n&&n.value.trim())||''; if(f0){gpBest=+gpLd('gp_best_'+f0.toLowerCase())||0;}}catch(e){}
  if(p)p.addEventListener('input',()=>{const d=p.value.replace(/\D/g,'');if(d.length>=7){gpBibV=gpNro(d);gpSv('gp_bib',gpBibV)}gpRefresh();try{drawVipPass()}catch(e){}});
- if(n)n.addEventListener('input',()=>{try{gpSv('gp_fam',n.value.trim())}catch(e){}gpRefresh();});
+ if(n)n.addEventListener('input',()=>{try{const v=n.value.trim();gpSv('gp_fam',v);gpBest=v?(+gpLd('gp_best_'+v.toLowerCase())||0):0;}catch(e){}gpRefresh();});
  window.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')gpSteer(-1);else if(e.key==='ArrowRight')gpSteer(1);else if(e.key===' '||e.key==='Spacebar'||e.key==='ArrowUp'){if(typeof G!=='undefined'&&G.st==='run'){e.preventDefault();gpBoost();}}});
  gpDraw();gpRefresh();gpRenderBoard();
  setTimeout(function(){try{cargarRanking(true)}catch(e){}},800);
