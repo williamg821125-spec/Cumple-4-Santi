@@ -534,13 +534,13 @@ body{padding-top:env(safe-area-inset-top,0px)}
 <!-- Nombre Completo / Familia -->
 <div>
 <label class="block text-[11px] font-bold text-gray-300 uppercase tracking-wider mb-1">
-              Nombre de la familia
+              Familia <span class="text-yellow-300 normal-case">(los dos apellidos)</span>
             </label>
 <div class="relative">
 <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-orange-500 pointer-events-none">
 <i class="fa-solid fa-user-astronaut"></i>
 </span>
-<input class="w-full bg-black/70 border border-gray-700 rounded-xl pl-10 pr-3 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 transition-all" id="guestName" oninput="syncPassFromForm()" placeholder="Ej: Familia García" required="" type="text"/>
+<input class="w-full bg-black/70 border border-gray-700 rounded-xl pl-10 pr-3 py-3 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400 transition-all" id="guestName" oninput="syncPassFromForm()" placeholder="Ej: Familia García Zúñiga" required="" type="text"/>
 </div>
 <div id="famDupMsg" class="fam-dup hidden" role="alert"></div>
 </div>
@@ -683,7 +683,7 @@ body{padding-top:env(safe-area-inset-top,0px)}
 <div class="grid grid-cols-3 gap-2 mb-3 text-left">
 <div class="col-span-2">
 <label class="block text-[10px] font-bold text-gray-400 uppercase mb-1">Nombre en el Pase</label>
-<input class="w-full bg-black/75 border border-orange-500/50 rounded-xl px-3 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-yellow-400" id="vipPassName" oninput="drawVipPass()" placeholder="Ej: Familia Ramírez" type="text"/>
+<input class="w-full bg-black/75 border border-orange-500/50 rounded-xl px-3 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-yellow-400" id="vipPassName" oninput="drawVipPass()" placeholder="Ej: Familia Ramírez Gómez" type="text"/>
 </div>
 <div>
 <label class="block text-[10px] font-bold text-gray-400 uppercase mb-1">Cupos</label>
@@ -2059,6 +2059,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeHelp();
 
 /* ===== Consultas a la hoja (JSONP) · familias únicas · ingreso con código ===== */
 function gpAsk(params){return new Promise(function(res){try{if(typeof GP==='undefined'||!GP.endpoint)return res(null);var cb='gpAsk'+Math.floor(Math.random()*1e9),done=false,sc=document.createElement('script');function cl(){try{delete window[cb]}catch(e){window[cb]=undefined}if(sc.parentNode)sc.parentNode.removeChild(sc);}window[cb]=function(d){if(done)return;done=true;res(d);cl();};sc.onerror=function(){if(!done){done=true;res(null);cl();}};var q=Object.keys(params).map(function(k){return encodeURIComponent(k)+'='+encodeURIComponent(params[k])}).join('&');sc.src=GP.endpoint+'?'+q+'&callback='+cb+'&t='+Date.now();document.body.appendChild(sc);setTimeout(function(){if(!done){done=true;res(null);cl();}},9000);}catch(e){res(null);}});}
+function contarApellidos(n){var t=String(n||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z\u00f1 ]/g,' ').replace(/^\s*(la\s+)?(familia|flia|fam)\s+/,'').split(/\s+/).filter(Boolean);var con={de:1,del:1,la:1,las:1,los:1,y:1,e:1,van:1,von:1,da:1,di:1,dos:1};return t.filter(function(w){return w.length>1&&!con[w];}).length;}
 function famDisp(f){f=String(f||'').trim();return /^familia\b/i.test(f)?f:('Familia '+f);}
 function aplicarFamilia(fam,bib){var gn=document.getElementById('guestName');if(gn)gn.value=fam;gpBibV=String(bib||'');try{gpSv('gp_fam',fam);gpSv('gp_bib',gpBibV);gpBest=+gpLd('gp_best_'+fam.toLowerCase())||0;}catch(e){}try{var pn=document.getElementById('vipPassName');if(pn)pn.value=fam;}catch(e){}try{gpRefresh();}catch(e){}try{drawVipPass();}catch(e){}}
 async function entrarConCodigo(raw,fam,msgEl){
@@ -2083,6 +2084,10 @@ async function handleRSVP(e){
   var name=(nameEl.value||'').trim(),box=document.getElementById('famDupMsg');
   if(box){box.classList.add('hidden');box.innerHTML='';}
   if(!name){return handleRSVPCore({preventDefault:function(){}});}
+  if(contarApellidos(name)<2){
+    if(box){box.innerHTML='✍️ Escriban <b>los dos apellidos</b> de la familia, así no se confunde con otra (ej: <i>Familia García Zúñiga</i>).';box.classList.remove('hidden');}
+    try{playBeep(220,.2);}catch(e){} try{nameEl.focus();}catch(e){} return;
+  }
   var btn=document.querySelector('#rsvpForm button[type="submit"]');
   if(btn){btn.disabled=true;btn.style.opacity='.7';}
   var d=((phoneEl&&phoneEl.value)||'').replace(/\D/g,''),prop=d.length>=7?gpNro(d):gpNro(name.toLowerCase());
@@ -2090,7 +2095,7 @@ async function handleRSVP(e){
   if(btn){btn.disabled=false;btn.style.opacity='';}
   if(r&&r.existe){
     var fd=famDisp(r.familia).replace(/</g,'');
-    if(box){box.innerHTML='⚠️ Ya está registrada la <b>'+fd+'</b>.<br>• Si son ustedes: <a href="javascript:void(0)" onclick="var x=document.getElementById(\'reentry\');x.classList.remove(\'hidden\');document.getElementById(\'reNum\').focus()">entren con su #código</a>.<br>• Si son otra familia: agreguen el segundo apellido (ej: <i>'+fd+' Pérez</i>).';box.classList.remove('hidden');}
+    if(box){box.innerHTML='⚠️ Ya está registrada la <b>'+fd+'</b>.<br>• Si son ustedes: <a href="javascript:void(0)" onclick="var x=document.getElementById(\'reentry\');x.classList.remove(\'hidden\');document.getElementById(\'reNum\').focus()">entren con su #código</a>.<br>• Si son otra familia: revisen los dos apellidos o agreguen un nombre (ej: <i>'+fd+' – Andrés</i>).';box.classList.remove('hidden');}
     try{playBeep(220,.2);}catch(e){}
     try{nameEl.focus();}catch(e){}
     return;
@@ -2126,7 +2131,7 @@ document.addEventListener('dragstart',function(e){if(e.target&&e.target.tagName=
 <button type="button" class="help-x" onclick="closeHelp()" aria-label="Cerrar ayuda">✕</button>
 </div>
 <div class="help-body">
-<details open><summary><span>1</span>Confirmar asistencia</summary><p>En <b>Registro de pilotos</b> escribe el nombre de tu familia (ej: <i>Familia García</i>), cuántos van y si asistirás. El WhatsApp es <b>opcional</b>: si lo dejas, te aparece un botón para recibir tu confirmación. Al enviar recibes tu <b>número de largada</b>.</p></details>
+<details open><summary><span>1</span>Confirmar asistencia</summary><p>En <b>Registro de pilotos</b> escribe la familia con <b>los dos apellidos</b> (ej: <i>Familia García Zúñiga</i>), cuántos van y si asistirás. El WhatsApp es <b>opcional</b>: si lo dejas, te aparece un botón para recibir tu confirmación. Al enviar recibes tu <b>número de largada</b>.</p></details>
 <details><summary><span>2</span>Descargar el Pase VIP</summary><p>Toca <b>Descarga tu Pase VIP</b> (botón azul), revisa el nombre y los cupos y toca <b>Descargar mi Pase VIP</b>. Se guarda como imagen en tu celular. Al descargarlo se <b>desbloquea el juego</b>.</p></details>
 <details><summary><span>3</span>Cómo se juega</summary><p>Cambia de carril con las flechas ← → (o tocando los lados de la pista). Esquiva conos, llantas y carros. Las <b>monedas cargan el NITRO</b>: cuando la barra diga <b>LISTO</b>, toca <b>NITRO</b> (en computador, la <b>barra espaciadora</b>). La velocidad sube poco a poco.</p></details>
 <details><summary><span>4</span>Cómo ganar el premio</summary><p>Juega con tu familia registrada: <b>cada partida envía tu puntaje</b> y en el ranking queda el mejor de cada familia. Se aceptan puntajes hasta el <b>sábado 5 de diciembre</b>. La familia con el mayor puntaje gana un <b>premio sorpresa</b> que se entrega en la fiesta.</p></details>
