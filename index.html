@@ -454,7 +454,7 @@ body{padding-top:env(safe-area-inset-top,0px)}
 </div>
 <div class="flex-1">
 <p class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Hora de Largada</p>
-<p class="font-racing text-lg font-bold text-yellow-300 leading-tight">3:30 PM</p>
+<p class="font-racing text-lg font-bold text-yellow-300 leading-tight">4:00 PM</p>
 <p class="text-[10px] text-orange-400 font-medium">Llegada puntual a pits</p>
 </div>
 </div>
@@ -476,7 +476,7 @@ body{padding-top:env(safe-area-inset-top,0px)}
 <div class="bg-black/60 p-2.5 rounded-xl border border-white/10">
 <span class="text-[9px] text-gray-400 uppercase font-bold block">Hora de Pits</span>
 <span class="font-racing text-sm font-bold text-orange-400 flex items-center gap-1">
-<i class="fa-regular fa-clock text-xs text-yellow-400"></i> 3:30 PM
+<i class="fa-regular fa-clock text-xs text-yellow-400"></i> 4:00 PM
             </span>
 </div>
 <div class="bg-black/60 p-2.5 rounded-xl border border-white/10">
@@ -1310,7 +1310,7 @@ Ranking en vivo · <span class="text-green-400">TOP 5</span></h3>
         icon: "fa-regular fa-clock",
         iconColor: "text-yellow-400",
         label: "Hora de Largada",
-        val: "3:30 PM",
+        val: "4:00 PM",
         sub: "Llegada puntual a pits"
       },
       {
@@ -1367,9 +1367,9 @@ Ranking en vivo · <span class="text-green-400">TOP 5</span></h3>
       renderTicker(currentTickerIdx);
     }, 4500);
 
-    // --- COUNTDOWN TIMER (Dec 6, 2026, 15:30) ---
+    // --- COUNTDOWN TIMER (Dec 6, 2026, 16:00) ---
     function updateCountdown() {
-      const targetDate = new Date('December 6, 2026 15:30:00').getTime();
+      const targetDate = new Date('December 6, 2026 16:00:00').getTime();
       const now = new Date().getTime();
       const diff = targetDate - now;
 
@@ -1489,7 +1489,7 @@ Ranking en vivo · <span class="text-green-400">TOP 5</span></h3>
 
       // Stats: cupos | hora
       const sY=194, sW=(RW-12)/2, sH=52;
-      [[ 'CUPOS', pilotCount+' '+(parseInt(pilotCount)===1?'PILOTO':'PILOTOS') ], ['LARGADA','3:30 PM']].forEach((it,i)=>{
+      [[ 'CUPOS', pilotCount+' '+(parseInt(pilotCount)===1?'PILOTO':'PILOTOS') ], ['LARGADA','4:00 PM']].forEach((it,i)=>{
         const x=R+i*(sW+12);
         ctx.fillStyle='rgba(255,255,255,0.06)'; roundRectPath(ctx,x,sY,sW,sH,10); ctx.fill();
         ctx.strokeStyle='rgba(255,255,255,0.12)'; ctx.lineWidth=1; roundRectPath(ctx,x,sY,sW,sH,10); ctx.stroke();
@@ -1740,7 +1740,7 @@ Ranking en vivo · <span class="text-green-400">TOP 5</span></h3>
 📱 *WhatsApp Contacto:* ${phone}
 💬 *Mensaje:* ${messageFormatted}
 🔢 *Número de largada:* #${gpBibV || '—'}
-📍 *Pista:* Calle 57N 3AN-108 | 6 Dic 2026, 3:30 PM`;
+📍 *Pista:* Calle 57N 3AN-108 | 6 Dic 2026, 4:00 PM`;
 
       const waEncoded = encodeURIComponent(rawText);
       const targetPhoneClean = "573182840198";
@@ -1768,7 +1768,7 @@ Ranking en vivo · <span class="text-green-400">TOP 5</span></h3>
             `🏁 Asistencia: ${attendanceFormatted}\n`+
             `👥 Cupos: ${count}\n`+
             `🔢 Tu número de largada: #${gpBibV || '—'}\n`+
-            `📍 Calle 57N 3AN-108 · 6 Dic 2026, 3:30 PM\n`+
+            `📍 Calle 57N 3AN-108 · 6 Dic 2026, 4:00 PM\n`+
             `🎮 Juega y acumula puntos para ganar el premio sorpresa. ¡Nos vemos en la meta!`;
           famConfirm.href = `https://wa.me/${famIntl}?text=${encodeURIComponent(confirmMsg)}`;
           famConfirm.classList.remove('hidden');
@@ -1790,7 +1790,7 @@ Ranking en vivo · <span class="text-green-400">TOP 5</span></h3>
       const title = encodeURIComponent("Cumpleaños #4 de Santiago García - Hot Wheels");
       const details = encodeURIComponent("¡Acelera a fondo! Gran Prix de Cumpleaños #4 de Santiago. Temática Hot Wheels.");
       const location = encodeURIComponent("Calle 57N 3AN-108");
-      const calUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20261206T203000Z/20261206T233000Z&details=${details}&location=${location}`;
+      const calUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20261206T210000Z/20261207T000000Z&details=${details}&location=${location}`;
       window.open(calUrl, '_blank');
     }
 
@@ -2137,7 +2137,7 @@ document.addEventListener('dragstart',function(e){if(e.target&&e.target.tagName=
 <details><summary><span>4</span>Cómo ganar el premio</summary><p>Juega con tu familia registrada: <b>cada partida envía tu puntaje</b> y en el ranking queda el mejor de cada familia. Se aceptan puntajes hasta el <b>sábado 5 de diciembre</b>. La familia con el mayor puntaje gana un <b>premio sorpresa</b> que se entrega en la fiesta.</p></details>
 <details><summary><span>5</span>Jugar desde otro celular</summary><p>Toca <b>¿Juegas desde otro teléfono?</b> debajo del registro y escribe tu <b>código familiar</b> (el #número de tu pase) <b>o el celular</b> con el que te registraste, más el nombre de tu familia igual al registro. Así todos suman para la misma familia. El código <b>solo lo conoce tu familia</b>.</p></details>
 <details><summary><span>6</span>Ranking en vivo</summary><p>El <b>Top 5 de familias</b> se actualiza solo. Si acabas de jugar, espera unos segundos o toca <b>actualizar</b>.</p></details>
-<details><summary><span>7</span>Lugar y hora</summary><p><b>Domingo 6 de diciembre · 3:30 PM</b><br>Calle 57N 3AN-108, La Flora, Cali. En <b>Telemetría de la pista</b> tienes los botones para abrir <b>Maps/Waze</b> y <b>agendar el evento</b>.</p></details>
+<details><summary><span>7</span>Lugar y hora</summary><p><b>Domingo 6 de diciembre · 4:00 PM</b><br>Calle 57N 3AN-108, La Flora, Cali. En <b>Telemetría de la pista</b> tienes los botones para abrir <b>Maps/Waze</b> y <b>agendar el evento</b>.</p></details>
 <details><summary><span>8</span>Sonido y música</summary><p>Usa el botón naranja de arriba a la derecha para activar o silenciar la música y los efectos. Si no suena, revisa que tu celular no esté en silencio.</p></details>
 </div>
 <button type="button" class="help-ok" onclick="closeHelp()">¡ENTENDIDO, A CORRER! 🏁</button>
