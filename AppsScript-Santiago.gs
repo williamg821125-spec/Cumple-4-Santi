@@ -1,5 +1,5 @@
-/*  GRAN PRIX SANTIAGO #4 — v3
- *  (ranking en vivo + familias únicas + ingreso con código desde otro celular)
+/*  GRAN PRIX SANTIAGO #4 — v4
+ *  (ranking en vivo + familias únicas + ingreso con código + lista de familias confirmadas)
  *
  *  CÓMO ACTUALIZAR:
  *  1. Pega TODO esto en tu Apps Script (reemplaza lo anterior) y guarda (💾).
@@ -104,12 +104,22 @@ function doGet(e) {
       }
       res = hit ? { ok: true, familia: hit[1], largada: String(hit[6]) } : { ok: false };
     } else {
-      res = { top: top5_() };
+      res = { top: top5_(), familias: confirmadas_() };
     }
   } catch (err) { res = { error: true, top: [] }; }
   var payload = JSON.stringify(res);
   if (cb) return ContentService.createTextOutput(cb + '(' + payload + ')').setMimeType(ContentService.MimeType.JAVASCRIPT);
   return ContentService.createTextOutput(payload).setMimeType(ContentService.MimeType.JSON);
+}
+
+/* Familias que confirmaron que SÍ vienen (solo el nombre, sin teléfonos). */
+function confirmadas_() {
+  var vistas = {};
+  return inscritos_().filter(function (r) {
+    var k = norm_(r[1]);
+    if (!k || vistas[k] || String(r[4]) === 'no') return false;
+    vistas[k] = 1; return true;
+  }).map(function (r) { return String(r[1]); });
 }
 
 /* Top 5 familias (mejor puntaje de carrera). Une variantes del mismo nombre. */

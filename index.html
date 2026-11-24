@@ -878,6 +878,18 @@ Ranking en vivo · <span class="text-green-400">TOP 5</span></h3>
 </ul>
 </div>
 </section>
+<!-- FAMILIAS CONFIRMADAS -->
+<section class="my-6" id="familiasSection">
+<div class="bg-neutral-900/90 border border-green-500/40 rounded-2xl p-4 text-left shadow-xl race-slide-card">
+<h4 class="font-racing text-base font-bold text-green-400 uppercase mb-1 flex items-center gap-2">
+<i class="fa-solid fa-flag-checkered" style="color:#fff"></i> FAMILIAS EN LA PARRILLA <span id="famCount" class="text-yellow-300 text-sm"></span>
+</h4>
+<p class="text-[11px] text-gray-400 mb-3">Ya confirmaron que vienen a la fiesta de Santi 🎉</p>
+<ul id="famList" class="flex flex-wrap gap-1.5"><li class="text-[11px] text-gray-500">Cargando familias…</li></ul>
+<p class="text-[10px] text-gray-400 mt-3 leading-snug flex items-center gap-1.5 flex-wrap">Si te inscribiste y no apareces, escríbenos:
+<a href="https://wa.me/573182840198?text=Pao%2C%20no%20aparecemos%20inscritos%20para%20la%20fiesta%20de%20Santi%20y%20ya%20nos%20registramos" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp" class="inline-flex items-center gap-1 rounded-full font-bold" style="background:#25D366;color:#fff;padding:3px 9px;font-size:11px"><i class="fa-brands fa-whatsapp" style="font-size:14px"></i> 318 284 0198</a></p>
+</div>
+</section>
 <!-- FOOTER HOT WHEELS -->
 <section class="my-7" id="finishLinePodium">
 <div class="max-w-[420px] mx-auto rounded-2xl cursor-pointer active:scale-95 transition-transform" style="padding:5px;background:repeating-conic-gradient(#fafafa 0 25%,#141414 0 50%) 0 0/18px 18px;box-shadow:0 0 20px rgba(255,200,0,0.4),0 6px 16px rgba(0,0,0,0.5)" onclick="playEngineRev(true); triggerRaceConfettiExplosion();">
@@ -1906,7 +1918,8 @@ function gpOver(){
 }
 var gpRankLoading=false;
 function reingresar(){var st=document.getElementById('reMsg');entrarConCodigo((document.getElementById('reNum')||{}).value,(document.getElementById('reFam')||{}).value,st).then(function(ok){if(ok&&typeof abrirSeccion==='function')setTimeout(function(){abrirSeccion('gameSection');},800);});}
-function renderRanking(data){var top=(data&&data.top)||[];var med=['#ffd100','#c9d2e3','#e6873c'];var html;if(!top.length){html='<li class="text-[11px] text-gray-500">Aún no hay puntajes de familias. ¡Sé la primera!</li>';}else{html=top.map(function(f,i){return '<li class="flex items-center gap-2 bg-black/50 rounded-lg px-2.5 py-1.5"><span class="font-racing font-black text-sm w-5 text-center" style="color:'+(med[i]||'#8aa')+'">'+(i+1)+'</span><span class="flex-1 text-xs text-white truncate">'+String(f.familia).replace(/</g,'')+'</span><span class="font-racing font-black text-sm text-orange-400">'+f.puntaje+'</span></li>';}).join('');}['gpLiveBoard','gpLiveBoard2'].forEach(function(idv){var el=document.getElementById(idv);if(el)el.innerHTML=html;});}
+function renderRanking(data){var top=(data&&data.top)||[];var med=['#ffd100','#c9d2e3','#e6873c'];var html;if(!top.length){html='<li class="text-[11px] text-gray-500">Aún no hay puntajes de familias. ¡Sé la primera!</li>';}else{html=top.map(function(f,i){return '<li class="flex items-center gap-2 bg-black/50 rounded-lg px-2.5 py-1.5"><span class="font-racing font-black text-sm w-5 text-center" style="color:'+(med[i]||'#8aa')+'">'+(i+1)+'</span><span class="flex-1 text-xs text-white truncate">'+String(f.familia).replace(/</g,'')+'</span><span class="font-racing font-black text-sm text-orange-400">'+f.puntaje+'</span></li>';}).join('');}['gpLiveBoard','gpLiveBoard2'].forEach(function(idv){var el=document.getElementById(idv);if(el)el.innerHTML=html;});try{renderFamilias(data);}catch(e){}}
+function renderFamilias(data){var ul=document.getElementById('famList'),ct=document.getElementById('famCount');if(!ul)return;if(!data||!Array.isArray(data.familias)){ul.innerHTML='<li class="text-[11px] text-gray-500">La lista se está actualizando…</li>';return;}var fs=data.familias;if(ct)ct.textContent=fs.length?'· '+fs.length:'';if(!fs.length){ul.innerHTML='<li class="text-[11px] text-gray-500">¡Aún no hay familias! Sé la primera en confirmar.</li>';return;}ul.innerHTML=fs.map(function(f){var n=String(f).replace(/[<>&"]/g,'').trim();if(!/^familia/i.test(n))n='Familia '+n;return '<li class="text-[11px] text-white rounded-full px-2.5 py-1" style="white-space:nowrap;background:rgba(34,197,94,.14);border:1px solid rgba(34,197,94,.45)">🏎️ '+n+'</li>';}).join('');}
 function cargarRanking(force){if(typeof GP==='undefined'||!GP.endpoint)return;if(gpRankLoading&&!force)return;gpRankLoading=true;var cb='gpRank'+Math.floor(Math.random()*1e6);var done=false;var sc=document.createElement('script');function cleanup(){try{delete window[cb];}catch(e){window[cb]=undefined;}if(sc&&sc.parentNode)sc.parentNode.removeChild(sc);}window[cb]=function(d){done=true;gpRankLoading=false;try{renderRanking(d);}catch(e){}cleanup();};sc.onerror=function(){gpRankLoading=false;cleanup();};sc.src=GP.endpoint+'?callback='+cb+'&t='+Date.now();document.body.appendChild(sc);setTimeout(function(){if(!done){gpRankLoading=false;cleanup();}},8000);}
 function estaRegistrado(){return !!((($g('guestName')||{}).value||'').trim() && gpBibV)}
 function gpBoardGet(){try{return JSON.parse(localStorage.getItem('gp_board')||'{}')}catch(e){return {}}}
