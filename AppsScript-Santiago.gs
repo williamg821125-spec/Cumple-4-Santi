@@ -38,7 +38,7 @@ function limpiarTodo() {
 /* ---------- Utilidades de nombres y códigos ---------- */
 function norm_(s) {
   s = String(s || '').toLowerCase();
-  if (s.normalize) s = s.normalize('NFD').replace(/[̀-ͯ]/g, '');
+  if (s.normalize) s = s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   s = s.replace(/[^a-z0-9ñ ]/g, ' ').replace(/\s+/g, ' ').trim();
   s = s.replace(/^(la )?(familia|flia|fam)\.? /, '');
   return s.trim();
